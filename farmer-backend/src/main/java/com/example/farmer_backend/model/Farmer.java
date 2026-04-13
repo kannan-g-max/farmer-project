@@ -4,8 +4,8 @@ import jakarta.persistence.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @jakarta.persistence.Entity
-@Table(name = "farmer")
-public class Entity {
+@Table(name = "farmers")
+public class Farmer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,9 +29,14 @@ public class Entity {
     @JsonProperty("coopSocietyNo")
     private String coopSocietyNo;
 
+    // Default status pending
     private String status = "PENDING";
 
-    // Getters and Setters
+    // Admin approve panna aprom vara pōra data
+    private String farmerId;
+    private String password;
+
+    // --- Getters and Setters ---
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     public String getName() { return name; }
@@ -48,4 +53,8 @@ public class Entity {
     public void setCoopSocietyNo(String coopSocietyNo) { this.coopSocietyNo = coopSocietyNo; }
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
+    public String getFarmerId() { return farmerId; }
+    public void setFarmerId(String farmerId) { this.farmerId = farmerId; }
+    public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
 }
