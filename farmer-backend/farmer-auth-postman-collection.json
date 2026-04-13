@@ -1,0 +1,126 @@
+{
+  "info": {
+    "name": "Farmer Auth API",
+    "_postman_id": "e6e7a8a6-9488-4e82-b8bc-5ce8229b0a7c",
+    "description": "Postman collection for Farmer/Public authentication flows.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Public Sign Up",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Krish\",\n  \"email\": \"krish@example.com\",\n  \"phone\": \"9876543210\",\n  \"password\": \"Password@123\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/public/signup",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "public",
+            "signup"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Public Sign In",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"public@example.com\",\n  \"password\": \"Public@123\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/public/signin",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "public",
+            "signin"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Farmer Sign In",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"farmerId\": \"FRM1001\",\n  \"password\": \"Farmer@123\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/farmer/signin",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "farmer",
+            "signin"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Farmer Apply",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Raman\",\n  \"phone\": \"9123456789\",\n  \"location\": \"Madurai\",\n  \"landPattaNo\": \"LP123456\",\n  \"kisanCardNo\": \"KC123456\",\n  \"coopSocietyNo\": \"CS123456\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/farmer/apply",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "farmer",
+            "apply"
+          ]
+        }
+      }
+    }
+  ]
+}
