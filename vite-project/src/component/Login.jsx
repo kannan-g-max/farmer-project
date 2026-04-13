@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import farmerBg from '../farmer-bg.jpg';
+import farmerBg from '../assets/farmer-bg.jpg';
 import './Login.css';
 import FarmerVerificationForm from './FarmerVerificationForm';
 
@@ -71,6 +71,7 @@ function Login() {
           handleChange={handleChange}
           handleSubmit={handleSubmit}
           setShowVerification={setShowVerification}
+          bgImage={farmerBg}
         />
       )}
     </div>

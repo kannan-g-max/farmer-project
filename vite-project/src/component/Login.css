@@ -4,8 +4,9 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  min-height: 100vh;
-  width: 100vw;
+  background-attachment: fixed;
+  min-height: 100dvh;
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -114,16 +115,31 @@ input {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.75);
-  backdrop-filter: blur(12px);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
   display: flex;
   justify-content: center;
   align-items: center; /* Initial center */
   z-index: 1000;
+  overflow: hidden;
+}
+
+.verification-overlay::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 0;
 }
 
 /* 2. Glass Box with White Title and Position adjustment */
 .verification-box {
+  position: relative;
+  z-index: 1;
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(20px);
   padding: 35px;

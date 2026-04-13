@@ -1,8 +1,13 @@
 import React from 'react';
 
-const FarmerVerificationForm = ({ handleChange, handleSubmit, setShowVerification }) => {
+const FarmerVerificationForm = ({ handleChange, handleSubmit, setShowVerification, bgImage }) => {
   return (
-    <div className="verification-overlay">
+    <div
+      className="verification-overlay"
+      style={{
+        backgroundImage: `url(${bgImage})`
+      }}
+    >
       <div className="verification-box">
         <h2>Farmer Verification</h2>
         <p>Please provide authentic details for approval</p>
@@ -13,7 +18,7 @@ const FarmerVerificationForm = ({ handleChange, handleSubmit, setShowVerificatio
           <input type="text" name="location" placeholder="Village / Location" onChange={handleChange} required />
           <input type="text" name="landPattaNo" placeholder="Land Patta Number" onChange={handleChange} required />
           <input type="text" name="kisanCardNo" placeholder="Kisan Credit Card Number" onChange={handleChange} required />
-          <input type="text" name="coopSocietyNo" placeholder="Co-operative Society No" onChange={handleChange} required />
+          <input type="text" name="coopSocietyNo" placeholder="Co-operative Society Number" onChange={handleChange} required />
 
           <div className="btn-group">
             <button type="submit" className="submit-btn">Verify & Save</button>
