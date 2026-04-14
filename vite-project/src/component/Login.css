@@ -1,220 +1,104 @@
-/* Full Screen Container */
-.app-container {
-  /* Image import Login.jsx-la irundhu varum, but backup-ku ingayum path kudukalaam */
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  min-height: 100dvh;
-  width: 100%;
+.login-page-container {
+  height: 100vh;
+  width: 100vw;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 0;
-  padding: 0;
   position: relative;
-  overflow: hidden;
-}
-
-/* Background Dark Overlay - Idhu thaan image-ah highlight pannum */
-.app-container::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.4); /* Image-ah light-ah dark aakkum */
-  z-index: 1;
-}
-
-/* Modern Glass Card */
-.login-card {
-  position: relative;
-  z-index: 2; /* Overlay-ku mela irukanum */
-  background: rgba(255, 255, 255, 0.1); 
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  padding: 40px;
-  border-radius: 24px;
-  width: 100%;
-  max-width: 420px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  text-align: center;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-}
-
-/* Title Alignment Fix */
-.login-card h1 {
-  color: white;
-  font-size: 28px;
-  margin-bottom: 25px;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-}
-
-/* Modern Tab Buttons (Farmer/Public) */
-.tabs {
-  display: flex;
-  gap: 15px;
-  margin-bottom: 20px;
-}
-
-.tab-btn {
-  flex: 1;
-  padding: 12px;
-  border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  background: rgba(255, 255, 255, 0.05);
-  color: white;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.tab-btn.active {
-  background: #28a745;
-  border: none;
-  box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
-}
-
-/* Modern Rounded Inputs */
-input {
-  width: 100%;
-  padding: 15px;
-  margin-bottom: 15px;
-  border-radius: 12px;
-  border: none;
-  background: #f0f0f0;
-  color: #333;
-  font-size: 16px;
-  box-sizing: border-box;
-}
-
-/* Big Green Login Button */
-.login-btn-main {
-  width: 100%;
-  padding: 16px;
-  background: #28a745;
-  color: white;
-  border: none;
-  border-radius: 12px;
-  font-weight: bold;
-  font-size: 18px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.login-btn-main:hover {
-  background: #218838;
-}
-/* 1. Form-ah light-ah mela thalla Overlay configuration */
-.verification-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  /* Background Image Link - Neenga idhai unga image path-ku mathikalam */
+  background-image: url('../assets/farmer-bg.jpg');
   background-size: cover;
   background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  display: flex;
-  justify-content: center;
-  align-items: center; /* Initial center */
-  z-index: 1000;
   overflow: hidden;
 }
 
-.verification-overlay::before {
-  content: "";
+/* Dark overlay for better text visibility */
+.background-overlay {
   position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.45);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  z-index: 0;
-}
-
-/* 2. Glass Box with White Title and Position adjustment */
-.verification-box {
-  position: relative;
-  z-index: 1;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(20px);
-  padding: 35px;
-  border-radius: 24px;
-  width: 90%;
-  max-width: 460px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
-  box-sizing: border-box;
-  
-  /* Position-ah light-ah mela thalla */
-  margin-top: -50px; 
-}
-
-/* 3. Title - Pure White Fix */
-.verification-box h2 {
-  color: #ffffff !important; /* White color */
-  font-size: 24px;
-  margin-bottom: 5px; /* Subtitle-oda gap koraika */
-  font-weight: 700;
-  text-align: center;
-}
-
-/* 4. Subtitle - Small and Subtle Fix */
-.verification-box p {
-  color: rgba(255, 255, 255, 0.7); /* Light white/grey */
-  font-size: 12.5px; /* Chinna size */
-  text-align: center;
-  margin-bottom: 25px;
-  font-weight: 400;
-  letter-spacing: 0.3px;
-}
-
-/* 5. Inputs and Buttons Logic */
-.verification-box form {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.verification-box input {
+  top: 0;
+  left: 0;
   width: 100%;
-  padding: 13px 15px;
-  border-radius: 12px;
-  border: none;
-  background: #ffffff !important;
-  color: #000 !important;
-  font-size: 14.5px;
-  box-sizing: border-box;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* Black shade with 50% transparency */
+  z-index: 1;
 }
 
-.btn-group {
-  display: flex;
-  gap: 12px;
-  margin-top: 8px;
-}
-
-.submit-btn {
-  flex: 2;
-  padding: 14px;
-  background: #28a745 !important;
-  color: white;
-  border: none;
-  border-radius: 12px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.cancel-btn {
-  flex: 1;
-  padding: 14px;
-  background: rgba(255, 255, 255, 0.1) !important;
-  color: white;
+.login-glass-card {
+  position: relative;
+  z-index: 2;
+  background: rgba(255, 255, 255, 0.1); /* Pure Glass Effect */
+  backdrop-filter: blur(20px);
+  padding: 45px 35px;
+  border-radius: 30px;
   border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 12px;
+  width: 100%;
+  max-width: 420px;
+  text-align: center;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+}
+
+.login-header h2 { font-size: 32px; color: white; letter-spacing: 2px; margin-bottom: 5px; }
+.login-header h2 span { color: #22c55e; }
+.login-header p { color: #e2e8f0; font-size: 14px; margin-bottom: 30px; }
+
+.role-selector {
+  display: flex;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 5px;
+  border-radius: 15px;
+  margin-bottom: 25px;
+}
+
+.role-selector button {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  background: transparent;
+  color: #cbd5e1;
+  font-weight: 600;
   cursor: pointer;
-  font-size: 14px;
+  border-radius: 10px;
+  transition: 0.3s;
+}
+
+.role-selector button.active {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.input-field { margin-bottom: 15px; }
+.input-field input {
+  width: 100%;
+  padding: 15px;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  color: white;
+  outline: none;
+}
+
+.login-btn {
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-radius: 12px;
+  font-weight: 800;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: 0.3s;
+}
+
+/* Dynamic Colors based on Role */
+.login-btn.farmer { background: #22c55e; color: #052e16; }
+.login-btn.customer { background: #3b82f6; color: #eff6ff; }
+.login-btn.delivery { background: #f59e0b; color: #451a03; }
+
+.footer-links {
+  margin-top: 25px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: #94a3b8;
+  cursor: pointer;
 }
