@@ -1,79 +1,70 @@
 import React, { useState } from 'react';
-import axios from 'axios';
-import farmerBg from '../assets/farmer-bg.jpg';
+import { useNavigate } from 'react-router-dom';
 import './Login.css';
-import FarmerVerificationForm from './FarmerVerificationForm';
 
-function Login() {
-  const [showVerification, setShowVerification] = useState(false);
-  const [farmerData, setFarmerData] = useState({
-    name: '',
-    phone: '',
-    location: '',
-    landPattaNo: '',
-    kisanCardNo: '',
-    coopSocietyNo: ''
-  });
+const Login = () => {
+  const [role, setRole] = useState('farmer'); 
+  const navigate = useNavigate();
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFarmerData({ ...farmerData, [name]: value });
-  };
-
-  const handleSubmit = async (e) => {
+  const handleLogin = (e) => {
     e.preventDefault();
-    try {
-      await axios.post('http://localhost:8080/api/farmer/apply', farmerData);
-      alert('Success! Details Saved in Database.');
-      setShowVerification(false);
-    } catch (error) {
-      console.error(error);
-      alert('Backend Connection Failed!');
-    }
+    if (role === 'farmer') navigate('/farmer-profile');
+    else if (role === 'customer') navigate('/market-feed');
+    else if (role === 'delivery') navigate('/delivery-dashboard');
   };
 
   return (
-    <div
-      className="app-container"
-      style={{
-        backgroundImage: `url(${farmerBg})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center'
-      }}
-    >
-      {!showVerification ? (
-        <div className="login-card">
-          <h1>Farmer Environment</h1>
+    <div className="login-page-container">
+      {/* Background Image Overlay */}
+      <div className="background-overlay"></div>
+      
+      <div className="login-glass-card">
+        <div className="login-header">
+          <h2>Farmer<span>AGRI</span></h2>
+          <p>Fresh from farms to your home</p>
+        </div>
 
-          <div className="tabs">
-            <button className="tab-btn active">Farmer Login</button>
-            <button className="tab-btn">Public Login</button>
+        {/* Role Selection Tabs */}
+        <div className="role-selector">
+          <button 
+            className={role === 'farmer' ? 'active' : ''} 
+            onClick={() => setRole('farmer')}
+          >🚜 Farmer</button>
+          <button 
+            className={role === 'customer' ? 'active' : ''} 
+            onClick={() => setRole('customer')}
+          >🛒 User</button>
+          <button 
+            className={role === 'delivery' ? 'active' : ''} 
+            onClick={() => setRole('delivery')}
+          >🚀 Rider</button>
+        </div>
+
+        <form onSubmit={handleLogin} className="login-form">
+          <div className="input-field">
+            <input type="text" placeholder={`${role.charAt(0).toUpperCase() + role.slice(1)} ID`} required />
           </div>
 
-          <input type="text" placeholder="Farmer ID" className="modern-input" />
-          <input type="password" placeholder="Password" className="modern-input" />
+          <div className="input-field">
+            <input type="password" placeholder="Password" required />
+          </div>
 
-          <button className="login-btn-main">Login</button>
-
-          <p style={{ marginTop: '20px', color: '#ccc' }}>
-            New Farmer?
-            <span
-              className="request-link"
-              onClick={() => setShowVerification(true)}
-              style={{ color: '#28a745', cursor: 'pointer', fontWeight: 'bold', marginLeft: '5px' }}
-            >
-              Request Verification
-            </span>
-          </p>
+          <button type="submit" className={`login-btn ${role}`}>
+            Login as {role.charAt(0).toUpperCase() + role.slice(1)}
+          </button>
+        </form>
+        
+        <div className="footer-links">
+          <span>Forgot Password?</span>
+          <span
+            className="link"
+            onClick={() => navigate('/register')} // Idhu dhaan unga Verification Form-ku kootitu pogum
+            style={{ cursor: 'pointer', color: '#22c55e', fontWeight: 'bold' }}
+          >
+            Create Account
+          </span>
         </div>
-      ) : (
-        <FarmerVerificationForm
-          handleChange={handleChange}
-          handleSubmit={handleSubmit}
-          setShowVerification={setShowVerification}
-          bgImage={farmerBg}
-        />
-      )}
+      </div>
     </div>
   );
 };
