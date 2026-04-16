@@ -28,6 +28,7 @@ public class FarmerApplicationService {
                 .build());
 
         return FarmerApplicationResponse.builder()
+                .message("Application submitted successfully")
                 .applicationId(application.getId())
                 .status(application.getStatus().name())
                 .build();
