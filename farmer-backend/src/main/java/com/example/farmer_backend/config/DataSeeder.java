@@ -29,13 +29,13 @@ public class DataSeeder {
                         .build());
             }
 
-            if (userRepository.findByFarmerId("FRM1001").isEmpty()) {
+            if (userRepository.findByFarmerId("FARM001").isEmpty()) {
                 userRepository.save(User.builder()
                         .name("Test Farmer User")
                         .phone("9123456789")
                         .passwordHash(passwordEncoder.encode("Farmer@123"))
                         .role(UserRole.FARMER)
-                        .farmerId("FRM1001")
+                        .farmerId("FARM001")
                         .enabled(true)
                         .build());
             }

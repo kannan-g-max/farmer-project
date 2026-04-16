@@ -3,14 +3,55 @@ import { useNavigate } from 'react-router-dom';
 import './Login.css';
 
 const Login = () => {
-  const [role, setRole] = useState('farmer'); 
+  const [role, setRole] = useState('farmer');
+  const [credential, setCredential] = useState('');
+  const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    if (role === 'farmer') navigate('/farmer-profile');
-    else if (role === 'customer') navigate('/market-feed');
-    else if (role === 'delivery') navigate('/delivery-dashboard');
+
+    if (role === 'delivery') {
+      navigate('/delivery-dashboard');
+      return;
+    }
+
+    const endpoint = role === 'farmer' ? '/api/farmer/signin' : '/api/public/signin';
+    const payload = role === 'farmer'
+      ? { farmerId: credential, password }
+      : { email: credential, password };
+
+    try {
+      setIsLoading(true);
+      const response = await fetch(`http://localhost:8080${endpoint}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        alert(data.message || 'Invalid credentials!');
+        return;
+      }
+
+      if (data.token) {
+        localStorage.setItem('token', data.token);
+      }
+      if (data.user) {
+        localStorage.setItem('user', JSON.stringify(data.user));
+      }
+
+      if (role === 'farmer') navigate('/farmer-profile');
+      else navigate('/market-feed');
+    } catch (error) {
+      console.error(error);
+      alert('Backend Connection Failed!');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -42,15 +83,27 @@ const Login = () => {
 
         <form onSubmit={handleLogin} className="login-form">
           <div className="input-field">
-            <input type="text" placeholder={`${role.charAt(0).toUpperCase() + role.slice(1)} ID`} required />
+            <input
+              type="text"
+              placeholder={role === 'customer' ? 'Email' : `${role.charAt(0).toUpperCase() + role.slice(1)} ID`}
+              value={credential}
+              onChange={(e) => setCredential(e.target.value)}
+              required
+            />
           </div>
 
           <div className="input-field">
-            <input type="password" placeholder="Password" required />
+            <input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
           </div>
 
-          <button type="submit" className={`login-btn ${role}`}>
-            Login as {role.charAt(0).toUpperCase() + role.slice(1)}
+          <button type="submit" className={`login-btn ${role}`} disabled={isLoading}>
+            {isLoading ? 'Please wait...' : `Login as ${role.charAt(0).toUpperCase() + role.slice(1)}`}
           </button>
         </form>
         

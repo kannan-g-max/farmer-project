@@ -8,6 +8,7 @@ import java.util.UUID;
 @Getter
 @Builder
 public class FarmerApplicationResponse {
+    private String message;
     private UUID applicationId;
     private String status;
 }

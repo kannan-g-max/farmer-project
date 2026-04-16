@@ -24,7 +24,10 @@ public class GlobalExceptionHandler {
         for (FieldError fieldError : ex.getBindingResult().getFieldErrors()) {
             errors.put(fieldError.getField(), fieldError.getDefaultMessage());
         }
-        return buildResponse(HttpStatus.BAD_REQUEST, "Validation failed", request.getRequestURI(), errors);
+        String message = request.getRequestURI().equals("/api/farmer/apply")
+                ? "Failed to submit application"
+                : "Validation failed";
+        return buildResponse(HttpStatus.BAD_REQUEST, message, request.getRequestURI(), errors);
     }
 
     @ExceptionHandler(BadCredentialsException.class)
@@ -40,7 +43,10 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiErrorResponse> handleGeneric(Exception ex, HttpServletRequest request) {
-        return buildResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error", request.getRequestURI(), null);
+        String message = request.getRequestURI().equals("/api/farmer/apply")
+                ? "Failed to submit application"
+                : "Internal server error";
+        return buildResponse(HttpStatus.INTERNAL_SERVER_ERROR, message, request.getRequestURI(), null);
     }
 
     private ResponseEntity<ApiErrorResponse> buildResponse(HttpStatus status,

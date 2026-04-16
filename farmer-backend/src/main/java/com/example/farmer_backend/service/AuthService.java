@@ -72,6 +72,7 @@ public class AuthService {
             throw new BadCredentialsException("Invalid credentials");
         }
         return SigninResponse.builder()
+                .message("Login Successful")
                 .token(jwtService.generateToken(user))
                 .user(authMapper.toUserResponse(user))
                 .build();

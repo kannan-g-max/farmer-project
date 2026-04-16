@@ -9,9 +9,9 @@ const FarmerVerificationForm = () => {
     name: '',
     phone: '',
     location: '',
-    landpattaNo: '',
+    landPattaNo: '',
     kisanCardNo: '',
-    coopsocieyNo: ''
+    coopSocietyNo: ''
   });
   const [isSuccess, setIsSuccess] = useState(false);
 
@@ -62,7 +62,7 @@ const FarmerVerificationForm = () => {
 
           <div className="field">
             <label>Land Patta Number</label>
-            <input type="text" name="landpattaNo" placeholder="Land Patta Number" onChange={handleChange} required />
+            <input type="text" name="landPattaNo" placeholder="Land Patta Number" onChange={handleChange} required />
           </div>
 
           <div className="input-row">
@@ -72,7 +72,7 @@ const FarmerVerificationForm = () => {
             </div>
             <div className="field">
               <label>Co-op Society No</label>
-              <input type="text" name="coopsocieyNo" placeholder="Co-op Society No" onChange={handleChange} required />
+              <input type="text" name="coopSocietyNo" placeholder="Co-op Society No" onChange={handleChange} required />
             </div>
           </div>
 
