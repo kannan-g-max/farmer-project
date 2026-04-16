@@ -8,9 +8,11 @@ const Login = () => {
 
   const handleLogin = (e) => {
     e.preventDefault();
+
+    // ✅ Existing logic untouched + Rider added
     if (role === 'farmer') navigate('/farmer-profile');
     else if (role === 'customer') navigate('/market-feed');
-    else if (role === 'delivery') navigate('/delivery-dashboard');
+    else if (role === 'delivery') navigate('/delivery-dashboard'); // ✅ Rider route
   };
 
   return (
@@ -30,10 +32,13 @@ const Login = () => {
             className={role === 'farmer' ? 'active' : ''} 
             onClick={() => setRole('farmer')}
           >🚜 Farmer</button>
+
           <button 
             className={role === 'customer' ? 'active' : ''} 
             onClick={() => setRole('customer')}
           >🛒 User</button>
+
+          {/* ✅ Rider button already same – no change */}
           <button 
             className={role === 'delivery' ? 'active' : ''} 
             onClick={() => setRole('delivery')}
@@ -42,7 +47,11 @@ const Login = () => {
 
         <form onSubmit={handleLogin} className="login-form">
           <div className="input-field">
-            <input type="text" placeholder={`${role.charAt(0).toUpperCase() + role.slice(1)} ID`} required />
+            <input 
+              type="text" 
+              placeholder={`${role.charAt(0).toUpperCase() + role.slice(1)} ID`} 
+              required 
+            />
           </div>
 
           <div className="input-field">
@@ -56,6 +65,7 @@ const Login = () => {
         
         <div className="footer-links">
           <span>Forgot Password?</span>
+
           <span
             className="link"
             onClick={() => navigate('/register')} // Idhu dhaan unga Verification Form-ku kootitu pogum

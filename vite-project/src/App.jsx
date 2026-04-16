@@ -7,6 +7,7 @@ import Login from './component/Login';
 import FarmerProfile from './component/FarmerProfile';
 import FarmerVerificationForm from './component/FarmerVerificationForm';
 import MarketFeed from './component/MarketFeed';
+import RiderDashboard from './component/RiderDashboard'; // ✅ ADDED ONLY THIS
 
 function App() {
   return (
@@ -24,6 +25,9 @@ function App() {
 
           {/* 4. Public User (Customer) pōra market feed page */}
           <Route path="/market-feed" element={<MarketFeed />} />
+
+          {/* ✅ RIDER ROUTE (ONLY ADDITION) */}
+          <Route path="/delivery-dashboard" element={<RiderDashboard />} />
 
           {/* Security: Thappa URL type panna automatic-ah login-ke kootitu pōgum */}
           <Route path="*" element={<Navigate to="/" />} />
