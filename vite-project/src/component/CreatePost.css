@@ -1,0 +1,51 @@
+.create-post-overlay {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.post-modal {
+  width: 600px;
+  background: #1a1a1a;
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+.modal-header {
+  padding: 15px;
+  border-bottom: 1px solid #333;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.upload-area {
+  padding: 100px 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.upload-icon { font-size: 50px; }
+
+.post-preview {
+  width: 100%;
+  max-height: 400px;
+  object-fit: cover;
+}
+
+.caption-input {
+  width: 100%;
+  padding: 15px;
+  background: transparent;
+  border: none;
+  color: #fff;
+  resize: none;
+  border-top: 1px solid #333;
+}

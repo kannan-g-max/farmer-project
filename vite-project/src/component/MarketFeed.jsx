@@ -4,20 +4,11 @@ import './MarketFeed.css';
 const MarketFeed = () => {
   // Dummy data for the feed
   const [feedItems] = useState([
+  
     {
       id: 1,
-      farmerName: 'Kannan T',
-      farmerHandle: '@kannan_agri',
-      product: 'Organic Tomatoes',
-      price: 40,
-      image: 'https://images.unsplash.com/photo-1518977676601-b53f02ac6d31?auto=format&fit=crop&w=500&q=60',
-      timeRemaining: '4h left',
-      distance: '1.2 km'
-    },
-    {
-      id: 2,
-      farmerName: 'Ram Kumar',
-      farmerHandle: '@ram_farms',
+      farmerName: 'T.Kannan',
+      farmerHandle: '@gopi_farms',
       product: 'Fresh Green Spinach',
       price: 25,
       image: 'https://images.unsplash.com/photo-1576045057995-568f588f82fb?auto=format&fit=crop&w=500&q=60',
@@ -34,7 +25,7 @@ const MarketFeed = () => {
     <div className="feed-container">
       <header className="feed-header">
         <h2>Agri<span>Gram</span></h2>
-        <div className="header-icons">❤️ 💬 ✈️</div>
+       
       </header>
 
       <div className="feed-scroll">

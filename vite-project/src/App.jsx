@@ -1,33 +1,56 @@
-import React from 'react';
-// Routing logic-ku idhu kandippa venum
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'; 
-
-// Unga components folder-la irundhu correct-ah import pannunga
-import Login from './component/Login';
-import FarmerProfile from './component/FarmerProfile';
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import FarmerVerificationForm from './component/FarmerVerificationForm';
-import MarketFeed from './component/MarketFeed';
+import Sidebar from './component/Sidebar';
+import MarketFeed from './component/MarketFeed'; 
+import FarmerProfile from './component/FarmerProfile'; 
+import Market from './component/Market';
+import Chat from './component/Chat';
+import CreatePost from './component/CreatePost';
+import Login from './component/Login';
+import './App.css';
 
 function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    return localStorage.getItem('isLoggedIn') === 'true';
+  });
+
+  const handleLogin = () => {
+    localStorage.setItem('isLoggedIn', 'true');
+    setIsAuthenticated(true);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('isLoggedIn');
+    setIsAuthenticated(false);
+  };
+
   return (
     <Router>
-      <div className="app-main-container">
-        <Routes>
-          {/* 1. Modhalla varra page - Login */}
-          <Route path="/" element={<Login />} />
+      <div className="desktop-agri-dashboard">
+        {/* Sidebar only shows when logged in */}
+        {isAuthenticated && <Sidebar onLogout={handleLogout} />}
 
-          {/* 2. New Farmer "Create Account" click panna pōra page */}
-          <Route path="/register" element={<FarmerVerificationForm />} />
+        <main className={isAuthenticated ? "dashboard-content" : "full-screen-auth"}>
+          <Routes>
+            {/* Login Route */}
+            <Route path="/login" element={!isAuthenticated ? <Login onLogin={handleLogin} /> : <Navigate to="/profile-feed" />} />
 
-          {/* 3. Farmer Login panna udane pōra Instagram-style profile */}
-          <Route path="/farmer-profile" element={<FarmerProfile />} />
+            {/* FARMER VERIFICATION - Ippo ithu work aagum */}
+            <Route path="/farmer-verification" element={<FarmerVerificationForm />} />
 
-          {/* 4. Public User (Customer) pōra market feed page */}
-          <Route path="/market-feed" element={<MarketFeed />} />
+            {/* Auth Protected Routes */}
+            <Route path="/" element={isAuthenticated ? <Navigate to="/profile-feed" /> : <Navigate to="/login" />} />
+            <Route path="/profile-feed" element={isAuthenticated ? <MarketFeed /> : <Navigate to="/login" />} />
+            <Route path="/market" element={isAuthenticated ? <Market /> : <Navigate to="/login" />} />
+            <Route path="/messages" element={isAuthenticated ? <Chat /> : <Navigate to="/login" />} />
+            <Route path="/create" element={isAuthenticated ? <CreatePost /> : <Navigate to="/login" />} />
+            <Route path="/farmer-profile" element={isAuthenticated ? <FarmerProfile /> : <Navigate to="/login" />} />
 
-          {/* Security: Thappa URL type panna automatic-ah login-ke kootitu pōgum */}
-          <Route path="*" element={<Navigate to="/" />} />
-        </Routes>
+            {/* Unknown path redirect */}
+            <Route path="*" element={<Navigate to={isAuthenticated ? "/profile-feed" : "/login"} />} />
+          </Routes>
+        </main>
       </div>
     </Router>
   );
