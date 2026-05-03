@@ -1,0 +1,94 @@
+.sidebar-container {
+  width: 260px;
+  height: 100vh;
+  position: fixed;
+  left: 0; top: 0;
+  background: rgba(15, 15, 15, 0.95);
+  backdrop-filter: blur(15px);
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 40px 0 30px 0; /* Bottom padding adjust panniyaachu */
+  display: flex;
+  flex-direction: column;
+  z-index: 1000;
+}
+
+.sidebar-logo {
+  font-size: 26px;
+  font-weight: 800;
+  margin-bottom: 40px;
+  color: #00FF7F;
+  padding: 0 25px;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex-grow: 1; /* Ithu main links-ai mela thallum */
+  padding: 0 15px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  text-decoration: none;
+  color: #b3b3b3;
+  font-size: 16px;
+  border-radius: 12px;
+  transition: 0.3s ease;
+  cursor: pointer;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.nav-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+}
+
+.nav-item.active {
+  background-color: #00FF7F !important;
+  color: #000 !important;
+  font-weight: bold;
+}
+
+.nav-item.active .nav-icon {
+  color: #000 !important;
+}
+
+/* --- THE LOGOUT FIX --- */
+.sidebar-footer {
+  padding: 10px 15px;
+  margin-top: auto; /* Push to bottom */
+  margin-bottom: 20px; /* Gap from the bottom edge of screen */
+}
+
+.logout-btn {
+  margin: auto;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  cursor:pointer;
+  margin-bottom: 20px; /* Bottom gap */
+
+  color: #ff4d4d !important; /* Standout Red color */
+  border: 1px solid rgba(255, 77, 77, 0.1); /* Subtle border */
+}
+
+.logout-btn:hover {
+  background: rgba(255, 77, 77, 0.1) !important;
+  border-color: rgba(255, 77, 77, 0.3);
+}
+
+.mini-profile-pic {
+  width: 24px;
+  height: 24px;
+  background: #333;
+  border: 1px solid #00FF7F;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

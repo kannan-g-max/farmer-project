@@ -1,95 +1,43 @@
 .feed-container {
-  max-width: 500px;
+  width: 100%;
+  max-width: 600px; /* Instagram feed width */
   margin: 0 auto;
-  background: #000;
-  color: white;
-  min-height: 100vh;
-  padding-bottom: 70px; /* Space for bottom nav */
-}
-
-.feed-header {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px 20px;
-  border-bottom: 1px solid #262626;
-  position: sticky;
-  top: 0;
-  background: #000;
-  z-index: 10;
+  flex-direction: column;
+  gap: 30px;
+  padding: 20px 0;
 }
 
-.feed-header h2 { font-size: 24px; font-family: 'Poppins', sans-serif; font-weight: 800; }
-.feed-header h2 span { color: #22c55e; }
-.header-icons { font-size: 20px; gap: 15px; display: flex; }
-
-/* Card Styling */
-.feed-card {
-  margin-bottom: 20px;
-  border-bottom: 1px solid #262626;
+.post-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 }
 
-.card-top {
+.post-header {
+  padding: 12px 15px;
   display: flex;
   align-items: center;
-  padding: 12px;
+  gap: 10px;
 }
 
-.farmer-thumb {
-  width: 35px; height: 35px;
-  background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.post-image {
+  width: 100%;
+  max-height: 500px;
+  object-fit: cover;
+}
+
+.post-footer {
+  padding: 15px;
+  text-align: left; /* Text alignment fix */
+}
+
+.farmer-id {
   font-weight: bold;
-  margin-right: 10px;
-}
-
-.farmer-details { display: flex; flex-direction: column; }
-.handle { font-weight: 600; font-size: 14px; }
-.location { font-size: 12px; color: #8e8e8e; }
-
-.card-image-wrapper { position: relative; width: 100%; aspect-ratio: 1/1; }
-.card-image-wrapper img { width: 100%; height: 100%; object-fit: cover; }
-
-.timer-overlay {
-  position: absolute;
-  top: 15px; right: 15px;
-  background: rgba(239, 68, 68, 0.9);
-  padding: 5px 12px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: bold;
-}
-
-.card-actions {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px;
-}
-
-.main-actions { font-size: 22px; display: flex; gap: 15px; cursor: pointer; }
-
-.buy-button {
-  background: #22c55e;
-  color: black;
-  border: none;
-  padding: 8px 18px;
-  border-radius: 8px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.buy-button:hover { transform: scale(1.05); }
-
-.card-description { padding: 0 12px 10px; font-size: 14px; line-height: 1.4; }
-.delivery-info {
-  padding: 10px 12px;
-  background: rgba(34, 197, 94, 0.1);
-  color: #22c55e;
-  font-size: 12px;
-  font-weight: 600;
+  color: #00FF7F;
+  margin-right: 8px;
 }

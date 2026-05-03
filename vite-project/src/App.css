@@ -1,0 +1,54 @@
+/* Main Layout */
+.desktop-agri-dashboard {
+  display: flex;
+  background-color: #000;
+  min-height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+/* Login Page look (Sidebar illatha pothu) */
+.full-screen-auth {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #121212;
+}
+.dashboard-content::-webkit-scrollbar-thumb {
+  background: rgba(0, 255, 127, 0.3);
+  border-radius: 10px;
+}
+.desktop-agri-dashboard {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  background-color: #121212;
+  overflow: hidden; /* Main body scroll thadukkum */
+}
+
+.dashboard-content {
+  margin-left: 260px; /* Sidebar gap */
+  flex-grow: 1;
+  height: 100vh;
+  background-color: #000;
+  
+  /* CENTER LOGIC */
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Horizontally center */
+  justify-content: flex-start; /* Elements-ai top-la irunthu start pannum */
+  
+  /* TOP & BOTTOM GAP FIX */
+  padding-top: 40px;    /* Top gap-ai koraichachu (Munnadi 60px or higher irunthirukkum) */
+  padding-bottom: 60px; /* Kela konjam gap venum nu sonninga la, athukaga */
+  
+  overflow-y: auto; 
+  box-sizing: border-box;
+}
+
+/* Scrollbar hide - clean look */
+.dashboard-content::-webkit-scrollbar {
+  width: 0px;
+}

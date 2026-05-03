@@ -9,9 +9,9 @@ const FarmerVerificationForm = () => {
     name: '',
     phone: '',
     location: '',
-    landPattaNo: '',
+    landPattaNo: '', // Fix: Matches the 'name' attribute below
     kisanCardNo: '',
-    coopSocietyNo: ''
+    coopSocietyNo: '' // Fix: Matches the 'name' attribute below
   });
   const [isSuccess, setIsSuccess] = useState(false);
 
@@ -22,14 +22,13 @@ const FarmerVerificationForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // URL Sync with your backend controller
       const response = await axios.post('http://localhost:8080/api/farmer/apply', formData);
       if (response.status === 200 || response.status === 201) {
         setIsSuccess(true);
       }
     } catch (error) {
       console.error("Error submitting form", error);
-      alert("Backend connection failed!");
+      alert("Submission failed. Check backend connection!");
     }
   };
 
@@ -79,17 +78,18 @@ const FarmerVerificationForm = () => {
           <button type="submit" className="submit-verify-btn">Request Verification</button>
         </form>
 
-        {/* This container ensures no layout jump */}
         <div className="status-container">
           {isSuccess && (
             <div className="success-msg-box">
               <span>✅ Request Sent!</span>
-              <p>Your details are saved. Admin will verify and generate your ID/Password.</p>
-              <button className="back-btn-link" onClick={() => navigate('/')}>Back to Login</button>
+              <p>Admin will verify and generate your ID/Password.</p>
+              <button className="back-btn-link" onClick={() => navigate('/login')}>Back to Login</button>
             </div>
           )}
           {!isSuccess && (
-             <p className="login-redirect" onClick={() => navigate('/')}>Already a member? Login</p>
+             <p className="login-redirect" onClick={() => navigate('/login')} style={{cursor:'pointer'}}>
+               Already a member? Login
+             </p>
           )}
         </div>
       </div>

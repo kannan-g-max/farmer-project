@@ -1,72 +1,75 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './FarmerProfile.css';
-import PostCreator from './PostCreator';
 
 const FarmerProfile = () => {
-  const [posts, setPosts] = useState([]);
-  const [showModal, setShowModal] = useState(false);
-
-  // Farmer Information
-  const farmerData = {
-    name: "Kannan T",
-    id: "@kannan_agri_pro",
-    location: "Madurai, Tamil Nadu",
-    rating: "4.9 ⭐",
-    followers: "1.2k"
-  };
-
   return (
-    <div className="profile-container">
-      {/* Top Profile Section */}
-      <header className="profile-header">
-        <div className="profile-img-wrapper">
-          <img src="https://via.placeholder.com/150" alt="Farmer" className="profile-pic" />
-        </div>
-        <div className="profile-info">
-          <div className="user-id-row">
-            <h2>{farmerData.id}</h2>
-            <button className="edit-btn" onClick={() => setShowModal(true)}>New Post</button>
-            <button className="settings-icon">⚙️</button>
-          </div>
-          <div className="stats-row">
-            <span><strong>{posts.length}</strong> posts</span>
-            <span><strong>{farmerData.followers}</strong> customers</span>
-            <span><strong>{farmerData.rating}</strong> rating</span>
-          </div>
-          <div className="bio">
-            <p className="farmer-name">{farmerData.name}</p>
-            <p>📍 {farmerData.location}</p>
-            <p>Fresh harvest delivered directly to your kitchen! 🍎🥦</p>
-          </div>
-        </div>
-      </header>
+    <div className="desktop-agri-dashboard">
+      {/* 1. Agri-Patterned Background Visual Overlay */}
+      <div className="agri-pattern-overlay"></div>
 
-      {/* Grid View of Posts */}
-      <div className="post-grid">
-        {posts.length === 0 ? (
-          <div className="no-posts">
-            <h3>No Live Harvests</h3>
-            <p>Share your fresh produce to start selling.</p>
-          </div>
-        ) : (
-          posts.map((post, i) => (
-            <div key={i} className="post-item">
-              <img src={post.img} alt="harvest" />
-              <div className="post-overlay">
-                <span>₹{post.price}</span>
-                <span className="timer-badge">⌛ {post.time}h left</span>
+      {/* 2. Left Sidebar - Translucent Glassmorphism */}
+      <aside className="main-sidebar">
+        <div className="sidebar-branding">FarmerAGRI</div>
+        <nav className="sidebar-nav">
+          <div className="nav-link active">🏠 Home Feed</div>
+          <div className="nav-link">🔍 Market</div>
+          <div className="nav-link">💬 Messages</div>
+          <div className="nav-link">➕ New Post</div>
+          <div className="nav-link">🧑‍🌾 Profile</div>
+        </nav>
+        <div className="sidebar-more">☰ More</div>
+      </aside>
+
+      {/* 3. Main Content Container */}
+      <main className="dashboard-content">
+        <div className="profile-central-card">
+          <header className="profile-hero-section">
+            <div className="avatar-holder">
+              <div className="profile-avatar-placeholder">
+                {/* Image Placeholder */}
+                {/* <img src="your-url.jpg" alt="Profile" /> */}
               </div>
             </div>
-          ))
-        )}
-      </div>
 
-      {showModal && (
-        <PostCreator 
-          onClose={() => setShowModal(false)} 
-          onPublish={(newPost) => setPosts([newPost, ...posts])}
-        />
-      )}
+            <section className="profile-info-column">
+              <div className="username-action-row">
+                <h2 className="user-handle">mr_kannan_.47 <span className="verified-status">✔</span></h2>
+                <div className="action-button-group">
+                  <button className="dashboard-btn primary">Edit profile</button>
+                  <button className="dashboard-btn secondary">Share profile</button>
+                </div>
+              </div>
+
+              <div className="stats-indicator-row">
+                <div className="stat-card"><strong>0</strong><span>Products</span></div>
+                <div className="stat-card"><strong>0</strong><span>Customers</span></div>
+                <div className="stat-card"><strong>0.0</strong><span>Rating</span></div>
+              </div>
+
+              <div className="bio-summary-row">
+              
+                <p>Farmer T | Madurai 📍 | TN 58 🤫</p>
+                <p className="farmer-label">mr_kannan_agri_pro 🚜</p>
+                <p>Fresh harvest delivered directly to your home! 🍎🥬</p>
+              </div>
+            </section>
+          </header>
+
+          <hr className="content-divider" />
+
+          {/* Product Grid Area - Simplified */}
+          <div className="product-tab-header">
+            <span className="active-tab">田 PRODUCTS</span>
+          </div>
+
+          <div className="product-display-grid">
+            {/* Map over products data in a real app */}
+            <div className="product-item"></div>
+            <div className="product-item"></div>
+            <div className="product-item"></div>
+          </div>
+        </div>
+      </main>
     </div>
   );
 };

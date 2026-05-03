@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Login.css';
 
-const Login = () => {
+const Login = ({ onLogin = () => {} }) => {
   const [role, setRole] = useState('farmer');
   const [credential, setCredential] = useState('');
   const [password, setPassword] = useState('');
@@ -44,6 +44,7 @@ const Login = () => {
         localStorage.setItem('user', JSON.stringify(data.user));
       }
 
+      onLogin();
       if (role === 'farmer') navigate('/farmer-profile');
       else navigate('/market-feed');
     } catch (error) {
@@ -56,16 +57,14 @@ const Login = () => {
 
   return (
     <div className="login-page-container">
-      {/* Background Image Overlay */}
       <div className="background-overlay"></div>
       
       <div className="login-glass-card">
         <div className="login-header">
           <h2>Farmer<span>AGRI</span></h2>
-          <p>Fresh from farms to your home</p>
+          <p>Fresh from farms to your shop</p>
         </div>
 
-        {/* Role Selection Tabs */}
         <div className="role-selector">
           <button 
             className={role === 'farmer' ? 'active' : ''} 
@@ -111,7 +110,7 @@ const Login = () => {
           <span>Forgot Password?</span>
           <span
             className="link"
-            onClick={() => navigate('/register')} // Idhu dhaan unga Verification Form-ku kootitu pogum
+            onClick={() => navigate('/farmer-verification')} 
             style={{ cursor: 'pointer', color: '#22c55e', fontWeight: 'bold' }}
           >
             Create Account
