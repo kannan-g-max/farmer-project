@@ -13,7 +13,7 @@ const FarmerProfile = () => {
         <nav className="sidebar-nav">
           <div className="nav-link active">🏠 Home Feed</div>
           <div className="nav-link">🔍 Market</div>
-          <div className="nav-link">💬 Messages</div>
+          <div className="nav-link">� Contact</div>
           <div className="nav-link">➕ New Post</div>
           <div className="nav-link">🧑‍🌾 Profile</div>
         </nav>

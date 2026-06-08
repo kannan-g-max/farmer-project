@@ -1,19 +1,16 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import FarmerVerificationForm from './component/FarmerVerificationForm';
-import Sidebar from './component/Sidebar';
-import MarketFeed from './component/MarketFeed'; 
-import FarmerProfile from './component/FarmerProfile'; 
-import Market from './component/Market';
-import Chat from './component/Chat';
-import CreatePost from './component/CreatePost';
-import Login from './component/Login';
+import Login from './pages/Login/Login';
+import FarmerVerificationForm from './pages/Verification/FarmerVerificationForm';
+import Sidebar from './shared/Sidebar/Sidebar';
+import MarketFeed from './pages/MarketFeed/MarketFeed';
+import FarmerProfile from './pages/FarmerProfile/FarmerProfile';
+import Market from './components/Market/Market';
+import CreatePost from './pages/CreatePost/CreatePost';
 import './App.css';
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(() => {
-    return localStorage.getItem('isLoggedIn') === 'true';
-  });
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const handleLogin = () => {
     localStorage.setItem('isLoggedIn', 'true');
@@ -43,7 +40,6 @@ function App() {
             <Route path="/" element={isAuthenticated ? <Navigate to="/profile-feed" /> : <Navigate to="/login" />} />
             <Route path="/profile-feed" element={isAuthenticated ? <MarketFeed /> : <Navigate to="/login" />} />
             <Route path="/market" element={isAuthenticated ? <Market /> : <Navigate to="/login" />} />
-            <Route path="/messages" element={isAuthenticated ? <Chat /> : <Navigate to="/login" />} />
             <Route path="/create" element={isAuthenticated ? <CreatePost /> : <Navigate to="/login" />} />
             <Route path="/farmer-profile" element={isAuthenticated ? <FarmerProfile /> : <Navigate to="/login" />} />
 

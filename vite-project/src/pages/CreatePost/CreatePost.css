@@ -1,0 +1,330 @@
+.create-post-container {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  animation: fadeIn 0.3s ease;
+  padding: 16px;
+  overflow: auto;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.post-modal {
+  background: linear-gradient(135deg, #1a1a1a 0%, #252525 100%);
+  border: 1.5px solid rgba(34, 197, 94, 0.3);
+  border-radius: 20px;
+  width: 100%;
+  max-width: 520px;
+  max-height: 90vh;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9), 0 0 40px rgba(34, 197, 94, 0.1);
+  display: flex;
+  flex-direction: column;
+  animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid rgba(34, 197, 94, 0.2);
+  background: rgba(34, 197, 94, 0.05);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  flex-shrink: 0;
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-size: clamp(16px, 4vw, 18px);
+  font-weight: 700;
+  background: linear-gradient(135deg, #fff 0%, #22c55e 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.close-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #999;
+  font-size: clamp(20px, 5vw, 24px);
+  cursor: pointer;
+  padding: 4px 8px;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.close-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.modal-content {
+  padding: clamp(16px, 4vw, 24px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.upload-area {
+  text-align: center;
+  padding: clamp(24px, 6vw, 40px) 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.upload-icon {
+  font-size: clamp(40px, 10vw, 56px);
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.upload-area p {
+  margin: 0;
+  color: #bbb;
+  font-size: clamp(13px, 4vw, 15px);
+  font-weight: 500;
+}
+
+.action-btn {
+  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+  color: white;
+  padding: clamp(8px, 2vw, 10px) clamp(20px, 5vw, 26px);
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: clamp(13px, 3vw, 14px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3);
+}
+
+.action-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(34, 197, 94, 0.5);
+}
+
+.action-btn:active {
+  transform: translateY(0);
+}
+
+.preview-area {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.post-preview {
+  width: 100%;
+  height: clamp(200px, 40vw, 320px);
+  object-fit: cover;
+  border-radius: 12px;
+  border: 2px solid rgba(34, 197, 94, 0.2);
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.product-input {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1.5px solid rgba(34, 197, 94, 0.2);
+  color: #fff;
+  padding: clamp(10px, 2vw, 12px);
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.product-input::placeholder {
+  color: #555;
+}
+
+.product-input:focus {
+  outline: none;
+  border-color: rgba(34, 197, 94, 0.6);
+  background: rgba(34, 197, 94, 0.05);
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1);
+}
+
+.product-input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.caption-input {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1.5px solid rgba(34, 197, 94, 0.2);
+  color: #fff;
+  padding: clamp(10px, 2vw, 12px);
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 14px;
+  resize: vertical;
+  min-height: clamp(70px, 15vw, 90px);
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.caption-input::placeholder {
+  color: #555;
+}
+
+.caption-input:focus {
+  outline: none;
+  border-color: rgba(34, 197, 94, 0.6);
+  background: rgba(34, 197, 94, 0.05);
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1);
+}
+
+.caption-input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.modal-footer {
+  display: flex;
+  gap: 12px;
+  padding: clamp(14px, 2vw, 16px) clamp(16px, 4vw, 24px);
+  border-top: 1px solid rgba(34, 197, 94, 0.2);
+  background: rgba(34, 197, 94, 0.02);
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+  flex-shrink: 0;
+}
+
+.cancel-btn,
+.share-btn {
+  flex: 1;
+  padding: clamp(10px, 2vw, 12px) clamp(12px, 3vw, 18px);
+  border-radius: 10px;
+  border: none;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: clamp(12px, 3vw, 14px);
+  transition: all 0.3s ease;
+}
+
+.cancel-btn {
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  border: 1.5px solid rgba(255, 255, 255, 0.1);
+}
+
+.cancel-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.share-btn {
+  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3);
+}
+
+.share-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(34, 197, 94, 0.5);
+}
+
+.cancel-btn:disabled,
+.share-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@media (max-width: 480px) {
+  .post-modal {
+    border-radius: 16px;
+    max-height: 95vh;
+  }
+
+  .modal-content {
+    padding: 16px;
+  }
+
+  .upload-area {
+    padding: 20px 16px;
+  }
+
+  .post-preview {
+    height: 200px;
+  }
+
+  .caption-input {
+    min-height: 70px;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 600px) {
+  .post-modal {
+    max-height: 98vh;
+  }
+
+  .modal-content {
+    padding: 12px;
+  }
+
+  .post-preview {
+    height: 200px;
+  }
+
+  .caption-input {
+    min-height: 60px;
+  }
+
+  .modal-footer {
+    padding: 10px 12px;
+  }
+}

@@ -1,0 +1,54 @@
+.login-page-container {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  background-image: url('../../assets/farmer-bg.jpg');
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+}
+
+.background-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+}
+
+.login-glass-card {
+  position: relative;
+  z-index: 2;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  padding: 45px 35px;
+  border-radius: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  width: 100%;
+  max-width: 420px;
+  text-align: center;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+}
+
+.login-header h2 { font-size: 32px; color: white; letter-spacing: 2px; margin-bottom: 5px; }
+.login-header h2 span { color: #22c55e; }
+.login-header p { color: #e2e8f0; font-size: 14px; margin-bottom: 30px; }
+
+.role-selector { display: flex; background: rgba(0, 0, 0, 0.4); padding: 5px; border-radius: 15px; margin-bottom: 25px; }
+.role-selector button { flex: 1; padding: 12px; border: none; background: transparent; color: #cbd5e1; font-weight: 600; cursor: pointer; border-radius: 10px; transition: 0.3s; }
+.role-selector button.active { background: rgba(255, 255, 255, 0.2); color: white; }
+
+.input-field { margin-bottom: 15px; }
+.input-field input { width: 100%; padding: 15px; background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; color: white; outline: none; }
+
+.login-btn { width: 100%; padding: 16px; border: none; border-radius: 12px; font-weight: 800; font-size: 16px; cursor: pointer; margin-top: 10px; transition: 0.3s; }
+.login-btn.farmer { background: #22c55e; color: #052e16; }
+.login-btn.customer { background: #3b82f6; color: #eff6ff; }
+.login-btn.delivery { background: #f59e0b; color: #451a03; }
+
+.footer-links { margin-top: 25px; display: flex; justify-content: space-between; font-size: 13px; color: #94a3b8; cursor: pointer; }

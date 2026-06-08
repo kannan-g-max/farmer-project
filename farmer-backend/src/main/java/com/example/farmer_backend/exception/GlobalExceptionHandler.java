@@ -45,6 +45,8 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiErrorResponse> handleGeneric(Exception ex, HttpServletRequest request) {
         String message = request.getRequestURI().equals("/api/farmer/apply")
                 ? "Failed to submit application"
+                : request.getRequestURI().equals("/api/farmer/upload")
+                ? "Upload failed"
                 : "Internal server error";
         return buildResponse(HttpStatus.INTERNAL_SERVER_ERROR, message, request.getRequestURI(), null);
     }
@@ -55,9 +57,6 @@ public class GlobalExceptionHandler {
                                                            Map<String, String> errors) {
         return ResponseEntity.status(status).body(ApiErrorResponse.builder()
                 .message(message)
-                .errors(errors)
-                .timestamp(Instant.now())
-                .path(path)
                 .build());
     }
 }

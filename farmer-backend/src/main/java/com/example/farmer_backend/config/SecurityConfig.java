@@ -42,6 +42,7 @@ public class SecurityConfig {
                                 "/api/public/signin",
                                 "/api/farmer/signin",
                                 "/api/farmer/apply",
+                                "/uploads/**",
                                 "/error"
                         ).permitAll()
                         .anyRequest().authenticated()
