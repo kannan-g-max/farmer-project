@@ -68,7 +68,7 @@ const Login = () => {
 
           <span
             className="link"
-            onClick={() => navigate('/register')} // Idhu dhaan unga Verification Form-ku kootitu pogum
+            onClick={() => navigate('/farmer-verification')} // Verification form route
             style={{ cursor: 'pointer', color: '#22c55e', fontWeight: 'bold' }}
           >
             Create Account

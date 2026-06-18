@@ -13,6 +13,9 @@ const Login = ({ onLogin }) => {
     e.preventDefault();
 
     if (role === 'delivery') {
+      localStorage.setItem('isLoggedIn', 'true');
+      localStorage.setItem('authRole', 'DELIVERY');
+      if (onLogin) onLogin('DELIVERY');
       navigate('/delivery-dashboard');
       return;
     }
@@ -37,10 +40,12 @@ const Login = ({ onLogin }) => {
 
       if (data.token) localStorage.setItem('token', data.token);
       if (data.user) localStorage.setItem('user', JSON.stringify(data.user));
+      const userRole = (data.user?.role || (role === 'customer' ? 'PUBLIC' : 'FARMER')).toUpperCase();
       localStorage.setItem('isLoggedIn', 'true');
-      if (onLogin) onLogin();
+      localStorage.setItem('authRole', userRole);
+      if (onLogin) onLogin(userRole);
 
-      if (role === 'farmer') navigate('/farmer-profile');
+      if (userRole === 'FARMER') navigate('/farmer-profile');
       else navigate('/market-feed');
     } catch (error) {
       console.error(error);

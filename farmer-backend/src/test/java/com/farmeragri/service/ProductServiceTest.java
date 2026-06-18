@@ -86,7 +86,7 @@ class ProductServiceTest {
     }
 
     @Test
-    void getFarmerProductsSkipsIncompleteRecordsAndNormalizesTheRest() {
+    void getFarmerProductsReturnsRowsEvenWhenImageUrlIsMissing() {
         Product complete = Product.builder()
                 .id(10L)
                 .farmerId(2L)
@@ -115,15 +115,25 @@ class ProductServiceTest {
 
         List<ProductDTO> products = productService.getFarmerProducts(2L);
 
-        assertEquals(1, products.size());
-        ProductDTO dto = products.get(0);
-        assertEquals(10L, dto.getId());
-        assertEquals("Spinach", dto.getName());
-        assertEquals(25.0, dto.getPrice(), 0.0001);
-        assertEquals("Organic spinach", dto.getDescription());
-        assertEquals("http://localhost:8080/uploads/spinach.jpg", dto.getImageUrl());
-        assertEquals("Ramesh", dto.getFarmerName());
-        assertEquals("@farm002", dto.getFarmerHandle());
-        assertFalse(products.stream().anyMatch(product -> "Broken".equals(product.getName())));
+        assertEquals(2, products.size());
+
+        ProductDTO first = products.get(0);
+        assertEquals(10L, first.getId());
+        assertEquals("Spinach", first.getName());
+        assertEquals(25.0, first.getPrice(), 0.0001);
+        assertEquals("Organic spinach", first.getDescription());
+        assertEquals("http://localhost:8080/uploads/spinach.jpg", first.getImageUrl());
+        assertEquals("Ramesh", first.getFarmerName());
+        assertEquals("@farm002", first.getFarmerHandle());
+
+        ProductDTO second = products.get(1);
+        assertEquals(11L, second.getId());
+        assertEquals("Broken", second.getName());
+        assertEquals(10.0, second.getPrice(), 0.0001);
+        assertEquals("Missing image", second.getDescription());
+        assertNull(second.getImageUrl());
+        assertEquals("Ramesh", second.getFarmerName());
+        assertEquals("@farm002", second.getFarmerHandle());
+        assertFalse(products.stream().anyMatch(product -> product.getName() == null));
     }
 }

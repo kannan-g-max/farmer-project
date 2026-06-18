@@ -32,14 +32,12 @@ public class ProductService {
     public List<ProductDTO> getFarmerProducts(Long farmerId) {
         return productRepository.findByFarmerId(farmerId).stream()
                 .map(this::toProductDto)
-                .filter(product -> product != null)
                 .toList();
     }
 
     public List<ProductDTO> getFeed() {
         return productRepository.findAll().stream()
                 .map(this::toProductDto)
-                .filter(product -> product != null)
                 .toList();
     }
 
@@ -82,13 +80,6 @@ public class ProductService {
     }
 
     private ProductDTO toProductDto(Product product) {
-        if (product.getName() == null
-                || product.getPrice() == null
-                || product.getDescription() == null
-                || product.getImageUrl() == null) {
-            return null;
-        }
-
         FarmerUser farmer = farmerUserRepository.findById(product.getFarmerId()).orElse(null);
         return ProductDTO.from(product, farmer, null, resolvePublicImageUrl(product.getImageUrl()));
     }
