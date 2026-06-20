@@ -1,7 +1,26 @@
 import { useEffect, useState } from "react";
 
 function RiderDashboard() {
-  const [orders, setOrders] = useState([]);
+  const [orders, setOrders] = useState([
+    {
+      id: 1,
+      product: "Spinach",
+      farmer: "Ram Farms",
+      pickup: "Thirumangalam",
+      delivery: "Madurai",
+      distance: 3.5,
+      status: "Available"
+    },
+    {
+      id: 2,
+      product: "Carrot",
+      farmer: "Kannan Farm",
+      pickup: "Madurai",
+      delivery: "Thiruparankundram",
+      distance: 5,
+      status: "Available"
+    }
+  ]);
   const [earnings, setEarnings] = useState(0);
   const [riderLocation, setRiderLocation] = useState(null);
 
@@ -13,30 +32,6 @@ function RiderDashboard() {
         lng: pos.coords.longitude
       });
     });
-  }, []);
-
-  // 📦 Orders
-  useEffect(() => {
-    setOrders([
-      {
-        id: 1,
-        product: "Spinach",
-        farmer: "Ram Farms",
-        pickup: "Thirumangalam",
-        delivery: "Madurai",
-        distance: 3.5,
-        status: "Available"
-      },
-      {
-        id: 2,
-        product: "Carrot",
-        farmer: "Kannan Farm",
-        pickup: "Madurai",
-        delivery: "Thiruparankundram",
-        distance: 5,
-        status: "Available"
-      }
-    ]);
   }, []);
 
   // ✅ Accept
