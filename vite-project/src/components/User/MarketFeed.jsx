@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import Sidebar from './Sidebar.jsx';
 import Cart from './Cart.jsx';       
 import MyOrders from './MyOrders.jsx'; 
-// 🔥 FIX: Pudhusa create panna profile view component-ah inga import panrom!
 import MyProfile from './MyProfile.jsx'; 
 import './MarketFeed.css';
 
@@ -11,16 +10,25 @@ const MarketFeed = () => {
   const [feedItems, setFeedItems] = useState([]);
   const [loading, setLoading] = useState(true);
   
+  // 🛒 Dynamic State - Default-ah empty array [] thaan! Dummy item edhuvum illa.
+  const [cartItems, setCartItems] = useState(() => {
+    const savedCart = localStorage.getItem('farmer_cart');
+    if (savedCart) {
+      return JSON.parse(savedCart);
+    }
+    return []; // Completely Empty initialized!
+  });
+
   // Search & Category states
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
 
   const getProductName = (item) => item.product || item.name || item.title || 'Premium Crop';
-  const getProductImage = (item) => item.image || item.imageUrl || item.photoUrl || '';
+  const getProductImage = (item) => item.image || item.imageUrl || item.photoUrl || 'https://images.unsplash.com/photo-1610348725531-843dff563e2c?q=80&w=600&auto=format&fit=crop';
   const getFarmerName = (item) => item.farmerName || 'Farmer';
   const getFarmerHandle = (item) => item.farmerHandle || `@farm_${item.id || '001'}`;
   const getDistance = (item) => item.distance || 'Madurai (Nearby)';
-  const getPrice = (item) => item.price || item.amount || 'Contact';
+  const getPrice = (item) => item.price || item.amount || 0;
   const getDescription = (item) => item.description || item.caption || 'Fresh harvest directly from fields.';
   const getCategory = (item) => item.category || 'Vegetables'; 
 
@@ -44,6 +52,33 @@ const MarketFeed = () => {
     if (activeTab === 'market') fetchFeed();
   }, [activeTab]);
 
+  // 🛒 Add To Cart Logic
+  const handleAddToCart = (product) => {
+    const productId = product.id || Date.now();
+    const existingItem = cartItems.find(item => item.id === productId);
+    let updatedCart;
+
+    if (existingItem) {
+      updatedCart = cartItems.map(item => 
+        item.id === productId ? { ...item, quantity: item.quantity + 1 } : item
+      );
+    } else {
+      const newItem = {
+        id: productId,
+        name: getProductName(product),
+        farmer: getFarmerName(product),
+        price: Number(getPrice(product)) || 25, 
+        quantity: 1, 
+        image: getProductImage(product)
+      };
+      updatedCart = [...cartItems, newItem];
+    }
+    
+    setCartItems(updatedCart);
+    localStorage.setItem('farmer_cart', JSON.stringify(updatedCart)); 
+    alert(`${getProductName(product)} Cart-la add aayiduchu macha! 🛒`);
+  };
+
   // Live Filtering Logic
   const filteredFeedItems = feedItems.filter(item => {
     const matchesSearch = 
@@ -59,7 +94,6 @@ const MarketFeed = () => {
 
   return (
     <div className="user-dashboard-layout">
-      {/* Sidebar navigation control */}
       <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
 
       <div className="feed-content-area">
@@ -72,7 +106,6 @@ const MarketFeed = () => {
               <p>Search crops or browse fresh items uploaded by local farmers</p>
             </header>
 
-            {/* Live Search Controls */}
             <div className="market-search-filter-box" style={{ width: '100%', maxWidth: '540px', marginBottom: '24px' }}>
               <input 
                 type="text"
@@ -82,7 +115,6 @@ const MarketFeed = () => {
                 style={{ width: '100%', padding: '14px 18px', background: '#141414', border: '1px solid #222', borderRadius: '10px', color: '#fff', fontSize: '15px', outline: 'none', boxSizing: 'border-box' }}
               />
               
-              {/* Category Filter Chips */}
               <div className="category-chips-row" style={{ display: 'flex', gap: '10px', marginTop: '14px', overflowX: 'auto', paddingBottom: '5px' }}>
                 {['All', 'Vegetables', 'Fruits', 'Grains', 'Organic'].map(cat => (
                   <button
@@ -128,8 +160,8 @@ const MarketFeed = () => {
                           <span className="bold-author">{getFarmerName(item)}</span> {getDescription(item)}
                         </p>
                         <div className="card-action-triggers">
-                          <button className="buy-trigger-btn" onClick={() => alert(`${getProductName(item)} added to checkout!`)}>🛒 Buy Now</button>
-                          <button className="whatsapp-trigger-btn" onClick={() => window.open('https://wa.me/#', '_blank')}>💬 WhatsApp</button>
+                          <button className="buy-trigger-btn" onClick={() => handleAddToCart(item)}>🛒 Add to Cart</button>
+                          <button className="whatsapp-trigger-btn" onClick={() => window.open(`https://wa.me/?text=${encodeURIComponent(`Hi, I am interested in your ${getProductName(item)}`)}`, '_blank')}>💬 WhatsApp</button>
                         </div>
                       </div>
                     </article>
@@ -141,12 +173,12 @@ const MarketFeed = () => {
         )}
 
         {/* VIEW 2: CART SCREEN */}
-        {activeTab === 'cart' && <Cart />}
+        {activeTab === 'cart' && <Cart cartItems={cartItems} setCartItems={setCartItems} />}
 
         {/* VIEW 3: MY ORDERS HISTORY */}
         {activeTab === 'orders' && <MyOrders />}
 
-        {/* 🔥 VIEW 4: MY PROFILE (Linked perfectly now!) */}
+        {/* VIEW 4: MY PROFILE */}
         {activeTab === 'profile' && <MyProfile />}
         
       </div>

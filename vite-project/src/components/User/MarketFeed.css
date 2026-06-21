@@ -1,23 +1,42 @@
 .user-dashboard-layout {
   display: flex;
   width: 100vw;
-  min-height: 100vh;
+  height: 100vh; /* Changed from min-height to strictly lock the screen */
   background-color: #0c0c0c;
   color: #ffffff;
   font-family: 'Inter', sans-serif;
   box-sizing: border-box;
-  overflow-x: hidden;
+  overflow: hidden; /* Main page outer scroll-ah target panni complete-ah hide panrom */
 }
 
 .feed-content-area {
   flex: 1;
   margin-left: 280px; /* Leaves perfect gap for fixed sidebar */
   padding: 40px;
-  min-height: 100vh;
+  height: 100vh; /* Changed from min-height */
   display: flex;
   flex-direction: column;
   align-items: center; /* Strictly centers all view containers in the active space */
   box-sizing: border-box;
+  overflow-y: auto; /* ENTHA EDATHULA THAAN SCROLL BAR VARUM! */
+}
+
+/* Custom Scrollbar Styling - Green Theme matching FarmerAGRI */
+.feed-content-area::-webkit-scrollbar {
+  width: 6px; /* Slim design scrollbar */
+}
+
+.feed-content-area::-webkit-scrollbar-track {
+  background: #0c0c0c; /* Black background track */
+}
+
+.feed-content-area::-webkit-scrollbar-thumb {
+  background: #22c55e; /* App green accent color */
+  border-radius: 10px;
+}
+
+.feed-content-area::-webkit-scrollbar-thumb:hover {
+  background: #15803d; /* Dark green on hover */
 }
 
 .feed-top-bar {

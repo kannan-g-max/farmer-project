@@ -1,36 +1,21 @@
-import React, { useState } from 'react';
-import './Cart.css'; // Static components common styles use pannikalam
-import './MarketFeed.css'; // Static components common styles use pannikalam
+import React from 'react';
+import './Cart.css';
+import './MarketFeed.css';
 
-export default function Cart() {
-  // Dummy Cart Items: Database integrate pannum pothu dynamic variable maathalam
-  const [cartItems, setCartItems] = useState([
-    {
-      id: 1,
-      name: "Organic Ponni Rice",
-      farmer: "Kannan T",
-      price: 55,
-      quantity: 20, // 20 Kg
-      image: "https://images.unsplash.com/photo-1586201375761-83865001e31c?q=80&w=600&auto=format&fit=crop"
-    },
-    {
-      id: 2,
-      name: "Country Tomatoes",
-      farmer: "Raman Kumar",
-      price: 30,
-      quantity: 5, // 5 Kg
-      image: "https://images.unsplash.com/photo-1595855759920-86582396756a?q=80&w=600&auto=format&fit=crop"
-    }
-  ]);
+export default function Cart({ cartItems, setCartItems }) {
 
   const updateQty = (id, change) => {
-    setCartItems(prev => prev.map(item => 
+    const updated = cartItems.map(item => 
       item.id === id ? { ...item, quantity: Math.max(1, item.quantity + change) } : item
-    ));
+    );
+    setCartItems(updated);
+    localStorage.setItem('farmer_cart', JSON.stringify(updated));
   };
 
   const removeItem = (id) => {
-    setCartItems(prev => prev.filter(item => item.id !== id));
+    const updated = cartItems.filter(item => item.id !== id);
+    setCartItems(updated);
+    localStorage.setItem('farmer_cart', JSON.stringify(updated));
   };
 
   const totalBill = cartItems.reduce((acc, item) => acc + (item.price * item.quantity), 0);
@@ -40,7 +25,9 @@ export default function Cart() {
       <h3 style={{ fontSize: '22px', marginBottom: '20px', color: '#22c55e' }}>🛒 Shopping Cart</h3>
       
       {cartItems.length === 0 ? (
-        <p style={{ color: '#666', textAlign: 'center', marginTop: '40px' }}>Your cart is empty</p>
+        <p style={{ color: '#666', textAlign: 'center', marginTop: '60px', fontSize: '15px' }}>
+          Cart empty-ah irukku macha! 🌾 <br/>Marketplace poyi add to cart click pannu!
+        </p>
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
           {cartItems.map(item => (
@@ -67,10 +54,10 @@ export default function Cart() {
             </div>
           ))}
 
-          {/* Checkout Box */}
+          {/* Checkout Card */}
           <div style={{ background: '#181818', border: '1px solid #222', padding: '20px', borderRadius: '14px', marginTop: '15px', textAlign: 'right' }}>
             <p style={{ margin: '0 0 15px 0', fontSize: '16px', color: '#aaa' }}>Total Amount: <span style={{ color: '#fff', fontSize: '22px', fontWeight: 'bold', marginLeft: '10px' }}>₹{totalBill}</span></p>
-            <button className="buy-trigger-btn" style={{ width: 'auto', padding: '12px 30px' }} onClick={() => alert('Order Placed Successfully!')}>Proceed to Checkout 🚀</button>
+            <button className="buy-trigger-btn" style={{ width: 'auto', padding: '12px 30px' }} onClick={() => alert('Order Placed Successfully! 🎉')}>Proceed to Checkout 🚀</button>
           </div>
         </div>
       )}
