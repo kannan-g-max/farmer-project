@@ -1,7 +1,18 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './MyProfile.css';
 
 const MyProfile = () => {
+const [showModal, setShowModal] = useState(false);
+
+const [profileImage, setProfileImage] = useState(
+  localStorage.getItem("userProfileImage") || ""
+);
+
+const [editedName, setEditedName] = useState("");
+
+const [editedBio, setEditedBio] = useState(
+  localStorage.getItem("userBio") || ""
+);
   // Local storage details-ah real-time-a handle panna fallback reader mapping
   let userData = {
     name: "Kannan T",
@@ -9,6 +20,41 @@ const MyProfile = () => {
     phone: "+91 94423 58102",
     address: "24, South Car Street, Madurai, Tamil Nadu - 625001"
   };
+  const saveProfile = () => {
+  const updatedUser = {
+    ...userData,
+    name: editedName,
+  };
+
+  localStorage.setItem(
+    "user",
+    JSON.stringify(updatedUser)
+  );
+
+  localStorage.setItem(
+    "userBio",
+    editedBio
+  );
+
+  setShowModal(false);
+
+  window.location.reload();
+};
+
+const handleImageUpload = (e) => {
+  const file = e.target.files[0];
+
+  if (!file) return;
+
+  const imageUrl = URL.createObjectURL(file);
+
+  setProfileImage(imageUrl);
+
+  localStorage.setItem(
+    "userProfileImage",
+    imageUrl
+  );
+};
 
   try {
     const storedUser = localStorage.getItem('user');
@@ -21,10 +67,9 @@ const MyProfile = () => {
   } catch (err) {
     console.warn('Invalid user data in localStorage:', err);
   }
-  
-  
-  
-
+ useEffect(() => {
+  setEditedName(userData.name || "");
+}, []); 
   return (
     <div className="profile-dashboard-wrapper">
       
@@ -36,11 +81,40 @@ const MyProfile = () => {
 
       {/* 💳 CARD 1: Identity Badge Layout Hero Element */}
       <div className="profile-identity-hero-card">
-        <div className="profile-avatar-mainframe">
-          {userData.name ? userData.name.charAt(0).toUpperCase() : 'U'}
-        </div>
+<div className="profile-avatar-mainframe">
+
+  {profileImage ? (
+    <img
+      src={profileImage}
+      alt=""
+      className="user-profile-img"
+    />
+  ) : (
+    userData.name
+      ? userData.name.charAt(0).toUpperCase()
+      : "U"
+  )}
+
+  <button
+    className="user-edit-btn"
+    onClick={() => setShowModal(true)}
+  >
+    ✏️
+  </button>
+
+</div>
         <div className="profile-meta-stack">
           <h4>{userData.name || 'Premium User'}</h4>
+          <p
+  style={{
+    marginTop: "15px",
+    color: "#22c55e",
+    fontStyle: "italic"
+  }}
+>
+  {localStorage.getItem("userBio") ||
+    "No bio added yet"}
+</p>
           <div className="status-badge-row">
             <span className="badge-verified-customer">Verified Buyer</span>
             <span className="badge-location-tag">📍 Madurai, TN</span>
@@ -92,7 +166,62 @@ const MyProfile = () => {
           ⚙️ Edit Profile Settings
         </button>
       </div>
+      {showModal && (
+  <div className="edit-modal">
 
+    <div className="edit-modal-content">
+
+      <h2>Edit Profile</h2>
+
+      <button
+        className="upload-btn"
+        onClick={() =>
+          document
+            .getElementById("userImageInput")
+            .click()
+        }
+      >
+        📷 Change Profile Photo
+      </button>
+
+      <input
+        type="file"
+        id="userImageInput"
+        style={{ display: "none" }}
+        accept="image/*"
+        onChange={handleImageUpload}
+      />
+
+      <input
+        type="text"
+        value={editedName}
+        onChange={(e) =>
+          setEditedName(e.target.value)
+        }
+        placeholder="Username"
+        className="edit-input"
+      />
+
+      <textarea
+        value={editedBio}
+        onChange={(e) =>
+          setEditedBio(e.target.value)
+        }
+        placeholder="Bio"
+        className="edit-bio"
+      />
+
+      <button
+        className="save-btn"
+        onClick={saveProfile}
+      >
+        Save Changes
+      </button>
+
+    </div>
+
+  </div>
+)}
     </div>
   );
 };
