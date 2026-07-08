@@ -16,13 +16,13 @@ const Sidebar = ({ onLogout }) => {
           <span className="nav-icon">🔍</span> Market
         </NavLink>
 
-        <a href="tel:+911234567890" className="nav-item">
+        {/* <a href="tel:+911234567890" className="nav-item">
           <span className="nav-icon">📞</span> Call
         </a>
 
         <a href="https://wa.me/911234567890" target="_blank" rel="noreferrer" className="nav-item">
           <span className="nav-icon">🟢</span> WhatsApp
-        </a>
+        </a> */}
 
         <NavLink to="/create" className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>
           <span className="nav-icon">➕</span> New Post

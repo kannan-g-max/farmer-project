@@ -14,10 +14,25 @@
   margin-left: 280px; /* Leaves perfect gap for fixed sidebar */
   padding: 40px;
   min-height: 100vh;
+  height: 100vh;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
   align-items: center; /* Strictly centers all view containers in the active space */
   box-sizing: border-box;
+}
+
+.feed-content-area::-webkit-scrollbar {
+  width: 8px;
+}
+
+.feed-content-area::-webkit-scrollbar-thumb {
+  background: rgba(34, 197, 94, 0.35);
+  border-radius: 999px;
+}
+
+.feed-content-area::-webkit-scrollbar-track {
+  background: transparent;
 }
 
 .feed-top-bar {

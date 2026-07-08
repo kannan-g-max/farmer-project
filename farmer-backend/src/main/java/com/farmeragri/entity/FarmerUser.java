@@ -58,6 +58,12 @@ public class FarmerUser {
     @Column
     private String bio;
 
+    @Column(columnDefinition = "LONGTEXT")
+    private String profileImage;
+
+    @Column(columnDefinition = "LONGTEXT")
+    private String coverImage;
+
     @Column
     private LocalDateTime createdAt;
 

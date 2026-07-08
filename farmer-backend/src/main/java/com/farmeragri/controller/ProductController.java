@@ -5,9 +5,11 @@ import com.farmeragri.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,5 +40,28 @@ public class ProductController {
                                              @RequestParam("price") Double price,
                                              @RequestParam("description") String description) {
         return ResponseEntity.ok(productService.uploadProduct(authorization, file, name, price, description));
+    }
+
+    @DeleteMapping("/api/products/{productId}")
+    public ResponseEntity<Void> deleteProduct(@RequestHeader("Authorization") String authorization,
+                                              @PathVariable Long productId) {
+        productService.deleteProduct(authorization, productId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/api/products/{productId}/stock")
+    public ResponseEntity<ProductDTO> updateStock(@RequestHeader("Authorization") String authorization,
+                                                  @PathVariable Long productId,
+                                                  @RequestParam("inStock") Boolean inStock) {
+        return ResponseEntity.ok(productService.updateStockStatus(authorization, productId, inStock));
+    }
+
+    @PutMapping("/api/products/{productId}")
+    public ResponseEntity<ProductDTO> updateProduct(@RequestHeader("Authorization") String authorization,
+                                                    @PathVariable Long productId,
+                                                    @RequestParam(value = "name", required = false) String name,
+                                                    @RequestParam(value = "price", required = false) Double price,
+                                                    @RequestParam(value = "description", required = false) String description) {
+        return ResponseEntity.ok(productService.updateProduct(authorization, productId, name, price, description));
     }
 }

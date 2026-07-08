@@ -62,7 +62,12 @@ function App() {
             <Route path="/market" element={isAuthenticated && isFarmer ? <Market /> : <Navigate to={isAuthenticated ? homeRoute : '/login'} />} />
             <Route path="/create" element={isAuthenticated && isFarmer ? <CreatePost /> : <Navigate to={isAuthenticated ? homeRoute : '/login'} />} />
             <Route path="/farmer-profile" element={isAuthenticated && isFarmer ? <FarmerProfile /> : <Navigate to={isAuthenticated ? homeRoute : '/login'} />} />
-            <Route path="/delivery-dashboard" element={isAuthenticated && isDeliveryUser ? <RiderDashboard /> : <Navigate to={isAuthenticated ? homeRoute : '/login'} />} />
+            
+            {/* 🔥 FIX: Rider Dashboard Route-ku onLogout Prop perfectly map panniyachu */}
+            <Route 
+              path="/delivery-dashboard" 
+              element={isAuthenticated && isDeliveryUser ? <RiderDashboard onLogout={handleLogout} /> : <Navigate to={isAuthenticated ? homeRoute : '/login'} />} 
+            />
 
             <Route path="*" element={<Navigate to={isAuthenticated ? homeRoute : '/login'} />} />
           </Routes>

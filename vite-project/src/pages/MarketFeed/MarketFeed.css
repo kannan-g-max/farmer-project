@@ -36,14 +36,6 @@
   text-shadow: 0 0 20px rgba(34, 197, 94, 0.3);
 }
 
-.feed-scroll {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
-  gap: 16px;
-  padding-bottom: 40px;
-  width: 100%;
-}
-
 .feed-card {
   background: linear-gradient(135deg, rgba(40, 40, 40, 0.6) 0%, rgba(30, 30, 30, 0.6) 100%);
   border: 1.5px solid rgba(34, 197, 94, 0.2);

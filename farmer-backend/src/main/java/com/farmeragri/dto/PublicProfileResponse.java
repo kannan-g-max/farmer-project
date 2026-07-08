@@ -1,17 +1,20 @@
 package com.farmeragri.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Builder
-public class FarmerProfileResponse {
+@NoArgsConstructor
+@AllArgsConstructor
+public class PublicProfileResponse {
     private Long id;
+    private String email;
     private String name;
+    private String phone;
     private String location;
-    private Double totalSales;
-    private Double rating;
     private String bio;
     private String profileImage;
-    private String coverImage;
 }

@@ -43,6 +43,10 @@ public class Product {
     @Column
     private String imageUrl;
 
+    @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT true")
+    @Builder.Default
+    private Boolean inStock = true;
+
     @Column
     private LocalDateTime createdAt;
 
@@ -50,6 +54,9 @@ public class Product {
     public void prePersist() {
         if (createdAt == null) {
             createdAt = LocalDateTime.now();
+        }
+        if (inStock == null) {
+            inStock = true;
         }
     }
 }

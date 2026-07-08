@@ -44,6 +44,18 @@ public class PublicUser {
     private Boolean active;
 
     @Column
+    private String phone;
+
+    @Column
+    private String location;
+
+    @Column(columnDefinition = "TEXT")
+    private String bio;
+
+    @Column(columnDefinition = "LONGTEXT")
+    private String profileImage;
+
+    @Column
     private LocalDateTime createdAt;
 
     @PrePersist

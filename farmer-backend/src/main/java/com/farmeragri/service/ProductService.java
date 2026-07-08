@@ -74,9 +74,79 @@ public class ProductService {
                 .price(price)
                 .description(description.trim())
                 .imageUrl(response.getFileUrl())
+                .inStock(true)
                 .build());
 
         return ProductDTO.from(product, farmer, null, resolvePublicImageUrl(product.getImageUrl()));
+    }
+
+    @Transactional
+    public void deleteProduct(String authorization, Long productId) {
+        Claims claims = claimsFromAuthorization(authorization);
+        if (!"FARMER".equals(String.valueOf(claims.get("role")))) {
+            throw new ApiException(HttpStatus.FORBIDDEN, "Forbidden");
+        }
+
+        Long farmerId = Long.valueOf(String.valueOf(claims.get("userId")));
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new ApiException(HttpStatus.NOT_FOUND, "Product not found"));
+
+        if (!product.getFarmerId().equals(farmerId)) {
+            throw new ApiException(HttpStatus.FORBIDDEN, "Forbidden");
+        }
+
+        productRepository.delete(product);
+    }
+
+    @Transactional
+    public ProductDTO updateStockStatus(String authorization, Long productId, Boolean inStock) {
+        Claims claims = claimsFromAuthorization(authorization);
+        if (!"FARMER".equals(String.valueOf(claims.get("role")))) {
+            throw new ApiException(HttpStatus.FORBIDDEN, "Forbidden");
+        }
+
+        Long farmerId = Long.valueOf(String.valueOf(claims.get("userId")));
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new ApiException(HttpStatus.NOT_FOUND, "Product not found"));
+
+        if (!product.getFarmerId().equals(farmerId)) {
+            throw new ApiException(HttpStatus.FORBIDDEN, "Forbidden");
+        }
+
+        product.setInStock(inStock);
+        Product saved = productRepository.save(product);
+        FarmerUser farmer = farmerUserRepository.findById(farmerId).orElse(null);
+        return ProductDTO.from(saved, farmer, null, resolvePublicImageUrl(saved.getImageUrl()));
+    }
+
+    @Transactional
+    public ProductDTO updateProduct(String authorization, Long productId, String name, Double price, String description) {
+        Claims claims = claimsFromAuthorization(authorization);
+        if (!"FARMER".equals(String.valueOf(claims.get("role")))) {
+            throw new ApiException(HttpStatus.FORBIDDEN, "Forbidden");
+        }
+
+        Long farmerId = Long.valueOf(String.valueOf(claims.get("userId")));
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new ApiException(HttpStatus.NOT_FOUND, "Product not found"));
+
+        if (!product.getFarmerId().equals(farmerId)) {
+            throw new ApiException(HttpStatus.FORBIDDEN, "Forbidden");
+        }
+
+        if (name != null && !name.trim().isEmpty()) {
+            product.setName(name.trim());
+        }
+        if (price != null) {
+            product.setPrice(price);
+        }
+        if (description != null && !description.trim().isEmpty()) {
+            product.setDescription(description.trim());
+        }
+
+        Product saved = productRepository.save(product);
+        FarmerUser farmer = farmerUserRepository.findById(farmerId).orElse(null);
+        return ProductDTO.from(saved, farmer, null, resolvePublicImageUrl(saved.getImageUrl()));
     }
 
     private ProductDTO toProductDto(Product product) {

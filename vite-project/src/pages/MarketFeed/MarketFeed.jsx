@@ -4,21 +4,24 @@ import './MarketFeed.css';
 const MarketFeed = () => {
   const [feedItems, setFeedItems] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('All');
 
-  const getProductName = (item) => item.product || item.name || item.title || 'Untitled product';
-  const getProductImage = (item) => item.image || item.imageUrl || item.photoUrl || item.fileUrl || '';
-  const getFarmerName = (item) => item.farmerName || item.farmerHandle || item.username || 'Farmer';
-  const getFarmerHandle = (item) => item.farmerHandle || item.handle || item.username || '@farmer';
-  const getDistance = (item) => item.distance || item.distanceAway || 'Nearby';
-  const getPrice = (item) => item.price ?? item.amount ?? '';
-  const getDescription = (item) => item.description || item.caption || item.details || '';
+  const getProductName = (item) => item.product || item.name || item.title || 'Premium Crop';
+  const getProductImage = (item) => item.image || item.imageUrl || item.photoUrl || 'https://images.unsplash.com/photo-1610348725531-843dff563e2c?q=80&w=600&auto=format&fit=crop';
+  const getFarmerName = (item) => item.farmerName || 'Farmer';
+  const getFarmerHandle = (item) => item.farmerHandle || `@farm_${item.id || '001'}`;
+  const getDistance = (item) => item.distance || 'Madurai (Nearby)';
+  const getPrice = (item) => item.price || item.amount || 0;
+  const getDescription = (item) => item.description || item.caption || 'Fresh harvest directly from fields.';
+  const getCategory = (item) => item.category || 'Vegetables';
 
   useEffect(() => {
     const fetchFeed = async () => {
       try {
         const token = localStorage.getItem('token');
         const response = await fetch('http://localhost:8080/api/products/feed', {
-          headers: { 'Authorization': `Bearer ${token}` }
+          headers: { Authorization: `Bearer ${token}` }
         });
         if (response.ok) {
           const data = await response.json();
@@ -33,42 +36,87 @@ const MarketFeed = () => {
     fetchFeed();
   }, []);
 
-  if (loading) return <div className="feed-container"><p>Loading feed...</p></div>;
+  const filteredFeedItems = feedItems.filter(item => {
+    const matchesSearch = 
+      getProductName(item).toLowerCase().includes(searchTerm.toLowerCase()) ||
+      getFarmerName(item).toLowerCase().includes(searchTerm.toLowerCase());
+      
+    const matchesCategory = 
+      selectedCategory === 'All' || 
+      getCategory(item).toLowerCase() === selectedCategory.toLowerCase();
+
+    return matchesSearch && matchesCategory;
+  });
 
   return (
-    <div className="feed-container">
-      <header className="feed-header">
-        <h2>Agri<span>Gram</span></h2>
+    <div className="feed-content-area" style={{ padding: '30px', boxSizing: 'border-box' }}>
+      <header className="feed-top-bar">
+        <h2>Agri<span>Gram</span> Marketplace</h2>
+        <p>Browse fresh items uploaded by fellow farmers in the region</p>
       </header>
 
-      <div className="feed-scroll">
-        {feedItems.length === 0 ? (
-          <p className="no-items">No products available</p>
-        ) : (
-          feedItems.map(item => (
-            <article key={item.id} className="feed-card">
-              <div className="card-top">
-                <div className="farmer-thumb">{getFarmerName(item).charAt(0).toUpperCase()}</div>
-                <div className="farmer-details">
-                  <span className="handle">{getFarmerHandle(item)}</span>
-                  <span className="location">{getDistance(item)}</span>
-                </div>
-              </div>
-
-              {getProductImage(item) && (
-                <div className="card-image-wrapper">
-                  <img src={getProductImage(item)} alt={getProductName(item)} />
-                </div>
-              )}
-
-              <div className="card-description">
-                <p><strong>{getProductName(item)}</strong>{getPrice(item) !== '' ? ` - ₹${getPrice(item)}` : ''}</p>
-                <p>{getDescription(item)}</p>
-              </div>
-            </article>
-          ))
-        )}
+      <div className="market-search-filter-box" style={{ width: '100%', maxWidth: '540px', marginBottom: '24px' }}>
+        <input 
+          type="text"
+          placeholder="🔍 Search crops, products or farmers..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          style={{ width: '100%', padding: '14px 18px', background: '#141414', border: '1px solid #222', borderRadius: '10px', color: '#fff', fontSize: '15px', outline: 'none', boxSizing: 'border-box' }}
+        />
+        
+        <div className="category-chips-row" style={{ display: 'flex', gap: '10px', marginTop: '14px', overflowX: 'auto', paddingBottom: '5px' }}>
+          {['All', 'Vegetables', 'Fruits', 'Grains', 'Organic'].map(cat => (
+            <button
+              key={cat}
+              onClick={() => setSelectedCategory(cat)}
+              style={{ background: selectedCategory === cat ? '#22c55e' : '#141414', color: selectedCategory === cat ? '#121212' : '#aaa', border: '1px solid #222', padding: '6px 14px', borderRadius: '20px', fontSize: '13px', fontWeight: '600', cursor: 'pointer', transition: 'all 0.2s' }}
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
       </div>
+
+      {loading ? (
+        <div className="feed-loading-box"><div className="loader-circle"></div><p>Loading market updates...</p></div>
+      ) : (
+        <div className="posts-container-list">
+          {filteredFeedItems.length === 0 ? (
+            <p className="no-posts-msg" style={{ color: '#555', marginTop: '40px' }}>🌾 No matching crops found or available today.</p>
+          ) : (
+            filteredFeedItems.map(item => (
+              <article key={item.id} className="instagram-style-card">
+                <div className="card-profile-header">
+                  <div className="avatar-letter">{getFarmerName(item).charAt(0).toUpperCase()}</div>
+                  <div className="profile-identity">
+                    <span className="name-handle">{getFarmerHandle(item)}</span>
+                    <span className="loc-tag">📍 {getDistance(item)}</span>
+                  </div>
+                </div>
+                
+                {getProductImage(item) && (
+                  <div className="card-media-box">
+                    <img src={getProductImage(item)} alt="crop" />
+                  </div>
+                )}
+                
+                <div className="card-info-footer">
+                  <div className="title-price-flex">
+                    <h3>{getProductName(item)}</h3>
+                    <span className="price-neon">₹{getPrice(item)}</span>
+                  </div>
+                  <p className="description-text">
+                    <span className="bold-author">{getFarmerName(item)}</span> {getDescription(item)}
+                  </p>
+                  <div className="card-action-triggers">
+                    <button className="whatsapp-trigger-btn" onClick={() => window.open(`https://wa.me/#?text=Hi, I am interested in your ${getProductName(item)}`, '_blank')} style={{ width: '100%' }}>💬 Contact Farmer via WhatsApp</button>
+                  </div>
+                </div>
+              </article>
+            ))
+          )}
+        </div>
+      )}
     </div>
   );
 };

@@ -20,6 +20,7 @@ public class ProductDTO {
     private String farmerName;
     private String farmerHandle;
     private String distance;
+    private Boolean inStock;
 
     public static ProductDTO from(Product product, FarmerUser farmer, String distance) {
         return from(product, farmer, distance, product.getImageUrl());
@@ -40,6 +41,7 @@ public class ProductDTO {
                 .farmerName(farmer == null ? null : farmer.getName())
                 .farmerHandle(farmerHandle)
                 .distance(distance)
+                .inStock(product.getInStock())
                 .build();
     }
 }

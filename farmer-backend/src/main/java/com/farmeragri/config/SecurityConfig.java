@@ -60,7 +60,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET,
                                 "/api/products/feed",
                                 "/api/farmer/*/products",
-                                "/api/farmer/*/profile"
+                                "/api/farmer/*/profile",
+                                "/api/public/*/profile"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )

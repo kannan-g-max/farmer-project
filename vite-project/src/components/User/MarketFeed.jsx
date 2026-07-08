@@ -15,12 +15,44 @@ const MarketFeed = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
 
+  // 🛒 Cart States
+  const [cartItems, setCartItems] = useState(() => {
+    const savedCart = localStorage.getItem('user_cart');
+    return savedCart ? JSON.parse(savedCart) : [];
+  });
+
+  const handleAddToCart = (product) => {
+    const productId = product.id || Date.now();
+    const existingItem = cartItems.find(item => item.id === productId);
+    let updatedCart;
+
+    if (existingItem) {
+      updatedCart = cartItems.map(item => 
+        item.id === productId ? { ...item, quantity: item.quantity + 1 } : item
+      );
+    } else {
+      const newItem = {
+        id: productId,
+        name: getProductName(product),
+        farmer: getFarmerName(product),
+        price: Number(getPrice(product)) || 25, 
+        quantity: 1, 
+        image: getProductImage(product)
+      };
+      updatedCart = [...cartItems, newItem];
+    }
+    
+    setCartItems(updatedCart);
+    localStorage.setItem('user_cart', JSON.stringify(updatedCart)); 
+    alert(`${getProductName(product)} added to cart! 🛒`);
+  };
+
   const getProductName = (item) => item.product || item.name || item.title || 'Premium Crop';
-  const getProductImage = (item) => item.image || item.imageUrl || item.photoUrl || '';
+  const getProductImage = (item) => item.image || item.imageUrl || item.photoUrl || 'https://images.unsplash.com/photo-1610348725531-843dff563e2c?q=80&w=600&auto=format&fit=crop';
   const getFarmerName = (item) => item.farmerName || 'Farmer';
   const getFarmerHandle = (item) => item.farmerHandle || `@farm_${item.id || '001'}`;
   const getDistance = (item) => item.distance || 'Madurai (Nearby)';
-  const getPrice = (item) => item.price || item.amount || 'Contact';
+  const getPrice = (item) => item.price || item.amount || 0;
   const getDescription = (item) => item.description || item.caption || 'Fresh harvest directly from fields.';
   const getCategory = (item) => item.category || 'Vegetables'; 
 
@@ -128,7 +160,7 @@ const MarketFeed = () => {
                           <span className="bold-author">{getFarmerName(item)}</span> {getDescription(item)}
                         </p>
                         <div className="card-action-triggers">
-                          <button className="buy-trigger-btn" onClick={() => alert(`${getProductName(item)} added to checkout!`)}>🛒 Buy Now</button>
+                          <button className="buy-trigger-btn" onClick={() => handleAddToCart(item)}>🛒 Add to Cart</button>
                           <button className="whatsapp-trigger-btn" onClick={() => window.open('https://wa.me/#', '_blank')}>💬 WhatsApp</button>
                         </div>
                       </div>
@@ -141,7 +173,7 @@ const MarketFeed = () => {
         )}
 
         {/* VIEW 2: CART SCREEN */}
-        {activeTab === 'cart' && <Cart />}
+        {activeTab === 'cart' && <Cart cartItems={cartItems} setCartItems={setCartItems} />}
 
         {/* VIEW 3: MY ORDERS HISTORY */}
         {activeTab === 'orders' && <MyOrders />}
