@@ -76,7 +76,7 @@ const MarketFeed = () => {
     
     setCartItems(updatedCart);
     localStorage.setItem('farmer_cart', JSON.stringify(updatedCart)); 
-    alert(`${getProductName(product)} Cart-la add aayiduchu macha! 🛒`);
+    alert(`${getProductName(product)} Added to Card Successfully 🛒`);
   };
 
   // Live Filtering Logic
