@@ -1,0 +1,158 @@
+.gig-professional-card {
+  display: grid;
+  grid-template-columns: 140px 1fr 160px;
+  background: #181a1b;
+  border: 1px solid #2e3235;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.2s, border-color 0.2s;
+}
+
+.gig-professional-card:hover {
+  transform: translateY(-2px);
+  border-color: #22c55e;
+}
+
+.gig-card-left {
+  background: #111314;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-right: 1px solid #2e3235;
+  align-items: center;
+  text-align: center;
+}
+
+.gig-id-tag {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #9ca3af;
+  background: #2e3235;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.gig-weight-indicator {
+  margin-top: 10px;
+}
+
+.gig-weight-indicator span {
+  display: block;
+  font-size: 0.65rem;
+  color: #6b7280;
+  text-transform: uppercase;
+}
+
+.gig-weight-indicator strong {
+  font-size: 1.2rem;
+  color: #38bdf8; /* Highlight weight cleanly */
+}
+
+.gig-card-center-route {
+  padding: 16px 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  gap: 12px;
+}
+
+.route-node {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  z-index: 2;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-top: 5px;
+}
+
+.dot-pickup { background: #ef4444; box-shadow: 0 0 8px #ef4444;}
+.dot-drop { background: #3b82f6; box-shadow: 0 0 8px #3b82f6;}
+
+.node-details small {
+  display: block;
+  font-size: 0.65rem;
+  color: #6b7280;
+  font-weight: 600;
+}
+
+.node-details h5 {
+  margin: 2px 0 0 0;
+  color: #e5e7eb;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.node-details h5 span {
+  color: #9ca3af;
+  font-size: 0.85rem;
+}
+
+.route-line-connector {
+  position: absolute;
+  left: 28px;
+  top: 38px;
+  bottom: 38px;
+  width: 2px;
+  background: #2e3235;
+  z-index: 1;
+}
+
+.gig-card-right-actions {
+  padding: 16px;
+  background: #111314;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: stretch;
+  border-left: 1px solid #2e3235;
+}
+
+.payout-block {
+  text-align: right;
+  color: #22c55e;
+}
+
+.currency-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-right: 2px;
+}
+
+.payout-amount {
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.item-badge {
+  font-size: 0.75rem;
+  color: #e5e7eb;
+  background: #1c1f20;
+  padding: 4px;
+  text-align: center;
+  border-radius: 6px;
+  border: 1px solid #2e3235;
+}
+
+.accept-gig-btn {
+  background: #22c55e;
+  color: #000;
+  border: none;
+  padding: 8px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.accept-gig-btn:hover {
+  background: #15803d;
+  color: #fff;
+}

@@ -1,0 +1,165 @@
+.rider-dashboard-layout {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  background-color: #0b0c0d; /* Ultra dark mode match */
+  color: #e5e7eb;
+  overflow: hidden;
+  font-family: 'Inter', sans-serif;
+}
+
+/* SIDEBAR STYLES */
+.rider-sidebar {
+  width: 260px;
+  background-color: #111314;
+  border-right: 1px solid #2e3235;
+  display: flex;
+  flex-direction: column;
+  padding: 24px 16px;
+  justify-content: space-between;
+}
+
+.sidebar-brand-zone h2 {
+  font-size: 1.4rem;
+  margin: 0;
+  color: #fff;
+  font-weight: 700;
+}
+
+.sidebar-brand-zone h2 span {
+  color: #22c55e; /* App custom green setup */
+}
+
+.role-pill {
+  display: inline-block;
+  background: #22c55e;
+  color: #000;
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-top: 4px;
+  letter-spacing: 0.05em;
+}
+
+.sidebar-menu-links {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 40px;
+  flex-grow: 1;
+}
+
+.menu-item-btn {
+  background: transparent;
+  border: none;
+  color: #9ca3af;
+  text-align: left;
+  padding: 12px 16px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: all 0.2s ease;
+}
+
+.menu-item-btn:hover {
+  background: #1c1f21;
+  color: #fff;
+}
+
+.menu-item-btn.active-tab {
+  background: rgba(34, 197, 94, 0.15);
+  color: #22c55e;
+  border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.sidebar-footer-zone {
+  border-top: 1px solid #2e3235;
+  padding-top: 16px;
+}
+
+.logout-btn-action {
+  width: 100%;
+  background: transparent;
+  border: 1px solid #ef4444;
+  color: #ef4444;
+  padding: 10px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.logout-btn-action:hover {
+  background: #ef4444;
+  color: #fff;
+}
+
+/* MAIN VIEWPORT PANELS */
+.rider-main-viewport {
+  flex-grow: 1;
+  padding: 30px;
+  overflow-y: auto;
+}
+
+.view-fade-in {
+  animation: fadeIn 0.35s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* EARNINGS SPECIFIC PANEL */
+.earnings-portal-card h2 {
+  color: #fff;
+  font-size: 1.6rem;
+  margin-top: 0;
+  margin-bottom: 6px;
+}
+
+.earnings-portal-card p {
+  color: #9ca3af;
+  font-size: 0.95rem;
+  margin-bottom: 24px;
+}
+
+.earnings-stats-grid {
+  max-width: 500px;
+}
+
+.stat-box-neon {
+  background: #181a1b;
+  border: 1px solid #2e3235;
+  border-radius: 12px;
+  padding: 30px;
+  text-align: center;
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.5);
+}
+
+.stat-box-neon small {
+  color: #9ca3af;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.stat-box-neon h3 {
+  font-size: 3rem;
+  color: #22c55e;
+  margin: 12px 0;
+  font-weight: 800;
+  text-shadow: 0 0 20px rgba(34, 197, 94, 0.2);
+}
+
+.payout-subtext {
+  display: block;
+  font-size: 0.8rem;
+  color: #6b7280;
+  line-height: 1.4;
+}
