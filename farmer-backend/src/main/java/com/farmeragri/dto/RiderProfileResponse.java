@@ -9,14 +9,12 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PublicProfileResponse {
+public class RiderProfileResponse {
     private Long id;
-    private String email;
+    private String riderId;
     private String name;
     private String phone;
     private String location;
     private Double latitude;
     private Double longitude;
-    private String bio;
-    private String profileImage;
 }

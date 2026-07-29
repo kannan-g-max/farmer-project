@@ -21,8 +21,27 @@ public class AuthService {
 
     private final FarmerUserRepository farmerUserRepository;
     private final PublicUserRepository publicUserRepository;
+    private final com.farmeragri.repository.RiderRepository riderRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
+
+    public SigninResponse signinRider(com.farmeragri.dto.RiderSigninRequest request) {
+        com.farmeragri.entity.Rider rider = riderRepository.findByRiderId(request.getRiderId())
+                .filter(com.farmeragri.entity.Rider::getActive)
+                .filter(user -> passwordEncoder.matches(request.getPassword(), user.getPassword()))
+                .orElseThrow(() -> new ApiException(HttpStatus.UNAUTHORIZED, "Invalid rider ID or password"));
+
+        return SigninResponse.builder()
+                .token(jwtService.generateToken(rider.getRiderId(), rider.getId(), rider.getRole()))
+                .user(UserResponse.builder()
+                        .id(rider.getId())
+                        .riderId(rider.getRiderId())
+                        .name(rider.getName())
+                        .role(rider.getRole())
+                        .build())
+                .message("Login successful")
+                .build();
+    }
 
     public SigninResponse signinFarmer(FarmerSigninRequest request) {
         FarmerUser farmer = farmerUserRepository.findByFarmerId(request.getFarmerId())

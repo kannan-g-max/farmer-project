@@ -12,16 +12,17 @@ const Login = ({ onLogin }) => {
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    if (role === 'delivery') {
-      localStorage.setItem('isLoggedIn', 'true');
-      localStorage.setItem('authRole', 'DELIVERY');
-      if (onLogin) onLogin('DELIVERY');
-      navigate('/delivery-dashboard');
-      return;
-    }
+    const endpoint = role === 'farmer' 
+      ? '/api/farmer/signin' 
+      : role === 'delivery' 
+        ? '/api/rider/signin' 
+        : '/api/public/signin';
 
-    const endpoint = role === 'farmer' ? '/api/farmer/signin' : '/api/public/signin';
-    const payload = role === 'farmer' ? { farmerId: credential, password } : { email: credential, password };
+    const payload = role === 'farmer' 
+      ? { farmerId: credential, password } 
+      : role === 'delivery' 
+        ? { riderId: credential, password } 
+        : { email: credential, password };
 
     try {
       setIsLoading(true);
@@ -40,12 +41,13 @@ const Login = ({ onLogin }) => {
 
       if (data.token) localStorage.setItem('token', data.token);
       if (data.user) localStorage.setItem('user', JSON.stringify(data.user));
-      const userRole = (data.user?.role || (role === 'customer' ? 'PUBLIC' : 'FARMER')).toUpperCase();
+      const userRole = (data.user?.role || (role === 'customer' ? 'PUBLIC' : role === 'delivery' ? 'DELIVERY' : 'FARMER')).toUpperCase();
       localStorage.setItem('isLoggedIn', 'true');
       localStorage.setItem('authRole', userRole);
       if (onLogin) onLogin(userRole);
 
       if (userRole === 'FARMER') navigate('/farmer-profile');
+      else if (userRole === 'DELIVERY') navigate('/delivery-dashboard');
       else navigate('/market-feed');
     } catch (error) {
       console.error(error);

@@ -1,0 +1,105 @@
+.location-tracking-card {
+  background: #181a1b;
+  border: 1px solid #2e3235;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  font-family: 'Inter', sans-serif;
+}
+
+.tracker-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.pulse-indicator-node {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pulse-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.pulse-dot.online {
+  background: #22c55e;
+  box-shadow: 0 0 10px #22c55e;
+  animation: radarPulse 1.6s infinite alternate;
+}
+
+.pulse-dot.offline {
+  background: #ef4444;
+  box-shadow: 0 0 10px #ef4444;
+}
+
+@keyframes radarPulse {
+  from { transform: scale(0.9); opacity: 0.6; }
+  to { transform: scale(1.2); opacity: 1; }
+}
+
+.status-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #e5e7eb;
+}
+
+.refresh-gps-btn {
+  background: #1c1f21;
+  border: 1px solid #3a3f42;
+  color: #9ca3af;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.refresh-gps-btn:hover {
+  background: #2e3235;
+  color: #fff;
+}
+
+.coordinates-data-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+
+.coord-data-box {
+  background: #111314;
+  border: 1px solid #2e3235;
+  padding: 12px 16px;
+  border-radius: 8px;
+}
+
+.coord-data-box small {
+  display: block;
+  font-size: 0.7rem;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 4px;
+}
+
+.coord-data-box h4 {
+  margin: 0;
+  color: #38bdf8; /* Digital cyber blue style text */
+  font-size: 1.1rem;
+  font-family: monospace;
+}
+
+.geo-fence-meta {
+  font-size: 0.75rem;
+  color: #6b7280;
+  line-height: 1.4;
+  border-top: 1px solid #2e3235;
+  padding-top: 12px;
+}

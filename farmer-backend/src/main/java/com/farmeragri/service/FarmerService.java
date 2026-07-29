@@ -26,6 +26,8 @@ public class FarmerService {
                 .id(farmer.getId())
                 .name(farmer.getName())
                 .location(farmer.getLocation())
+                .latitude(farmer.getLatitude())
+                .longitude(farmer.getLongitude())
                 .totalSales(farmer.getTotalSales())
                 .rating(farmer.getRating())
                 .bio(farmer.getBio())
@@ -63,6 +65,12 @@ public class FarmerService {
         if (request.getLocation() != null) {
             farmer.setLocation(request.getLocation().trim());
         }
+        if (request.getLatitude() != null) {
+            farmer.setLatitude(request.getLatitude());
+        }
+        if (request.getLongitude() != null) {
+            farmer.setLongitude(request.getLongitude());
+        }
         if (request.getProfileImage() != null) {
             farmer.setProfileImage(request.getProfileImage());
         }
@@ -75,6 +83,8 @@ public class FarmerService {
                 .id(saved.getId())
                 .name(saved.getName())
                 .location(saved.getLocation())
+                .latitude(saved.getLatitude())
+                .longitude(saved.getLongitude())
                 .totalSales(saved.getTotalSales())
                 .rating(saved.getRating())
                 .bio(saved.getBio())

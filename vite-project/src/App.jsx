@@ -7,7 +7,7 @@ import FarmerMarketFeed from './pages/MarketFeed/MarketFeed';
 import FarmerProfile from './pages/FarmerProfile/FarmerProfile';
 import Market from './components/Market/Market';
 import CreatePost from './pages/CreatePost/CreatePost';
-import RiderDashboard from './components/Rider/RiderDashboard';
+import RiderDashboard from './components/Rider/DeliveryDashboard';
 import PublicMarketFeed from './components/User/MarketFeed';
 import './App.css';
 

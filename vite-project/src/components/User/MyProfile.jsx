@@ -10,6 +10,8 @@ const MyProfile = () => {
     name: '',
     phone: '',
     location: '',
+    latitude: '',
+    longitude: '',
     bio: '',
     profileImage: ''
   });
@@ -18,6 +20,8 @@ const MyProfile = () => {
   const [editedBio, setEditedBio] = useState("");
   const [editedPhone, setEditedPhone] = useState("");
   const [editedLocation, setEditedLocation] = useState("");
+  const [editedLatitude, setEditedLatitude] = useState("");
+  const [editedLongitude, setEditedLongitude] = useState("");
 
   const user = JSON.parse(localStorage.getItem('user') || '{}');
   const userId = user.id;
@@ -33,6 +37,8 @@ const MyProfile = () => {
           setEditedBio(data.bio || "");
           setEditedPhone(data.phone || "");
           setEditedLocation(data.location || "");
+          setEditedLatitude(data.latitude || "");
+          setEditedLongitude(data.longitude || "");
         }
       } catch (err) {
         console.error('Failed to fetch user profile:', err);
@@ -61,6 +67,8 @@ const MyProfile = () => {
           bio: editedBio,
           phone: editedPhone,
           location: editedLocation,
+          latitude: editedLatitude ? Number(editedLatitude) : null,
+          longitude: editedLongitude ? Number(editedLongitude) : null,
           profileImage: profile.profileImage
         })
       });
@@ -106,6 +114,8 @@ const MyProfile = () => {
             bio: editedBio || profile.bio,
             phone: editedPhone || profile.phone,
             location: editedLocation || profile.location,
+            latitude: editedLatitude ? Number(editedLatitude) : (profile.latitude || null),
+            longitude: editedLongitude ? Number(editedLongitude) : (profile.longitude || null),
             profileImage: base64Data
           })
         });
@@ -172,7 +182,7 @@ const MyProfile = () => {
           </p>
           <div className="status-badge-row">
             <span className="badge-verified-customer">Verified Buyer</span>
-            <span className="badge-location-tag">📍 {profile.location || 'Location pending'}</span>
+            <span className="badge-location-tag">📍 {profile.location || 'Location pending'} {profile.latitude && profile.longitude ? `(${profile.latitude}, ${profile.longitude})` : ''}</span>
           </div>
         </div>
       </div>
@@ -274,6 +284,26 @@ const MyProfile = () => {
               value={editedLocation}
               onChange={(e) => setEditedLocation(e.target.value)}
               placeholder="Delivery Address"
+              className="edit-input"
+            />
+
+            <label style={{ alignSelf: 'flex-start', fontSize: '12px', color: '#888', marginBottom: '4px' }}>Latitude</label>
+            <input
+              type="number"
+              step="any"
+              value={editedLatitude}
+              onChange={(e) => setEditedLatitude(e.target.value)}
+              placeholder="Latitude"
+              className="edit-input"
+            />
+
+            <label style={{ alignSelf: 'flex-start', fontSize: '12px', color: '#888', marginBottom: '4px' }}>Longitude</label>
+            <input
+              type="number"
+              step="any"
+              value={editedLongitude}
+              onChange={(e) => setEditedLongitude(e.target.value)}
+              placeholder="Longitude"
               className="edit-input"
             />
 

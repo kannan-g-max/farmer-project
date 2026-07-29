@@ -8,6 +8,9 @@ const FarmerProfile = () => {
   const [editing, setEditing] = useState(false);
   const [editedName, setEditedName] = useState("");
   const [editedBio, setEditedBio] = useState("");
+  const [editedLocation, setEditedLocation] = useState("");
+  const [editedLatitude, setEditedLatitude] = useState("");
+  const [editedLongitude, setEditedLongitude] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [openMenu, setOpenMenu] = useState(null);
 
@@ -30,6 +33,9 @@ const FarmerProfile = () => {
         setProfile(data);
         setEditedName(data.name || "");
         setEditedBio(data.bio || "");
+        setEditedLocation(data.location || "");
+        setEditedLatitude(data.latitude || "");
+        setEditedLongitude(data.longitude || "");
       }
     } catch (error) {
       console.error('Failed to fetch profile:', error);
@@ -87,7 +93,9 @@ const FarmerProfile = () => {
         body: JSON.stringify({
           name: editedName,
           bio: editedBio,
-          location: profile?.location || '',
+          location: editedLocation,
+          latitude: editedLatitude ? Number(editedLatitude) : null,
+          longitude: editedLongitude ? Number(editedLongitude) : null,
           profileImage: profile?.profileImage || '',
           coverImage: profile?.coverImage || ''
         })
@@ -340,7 +348,7 @@ const FarmerProfile = () => {
             </div>
 
             <div className="profile-bio">
-              <p>📍 {profile?.location || 'Location pending'}</p>
+              <p>📍 {profile?.location || 'Location pending'} {profile?.latitude && profile?.longitude ? `(${profile.latitude}, ${profile.longitude})` : ''}</p>
 
               <div className="bio-text">
                 {editing ? (
@@ -548,6 +556,32 @@ const FarmerProfile = () => {
               onChange={(e) => setEditedBio(e.target.value)}
               placeholder="Bio"
               className="edit-bio"
+            />
+
+            <input
+              type="text"
+              value={editedLocation}
+              onChange={(e) => setEditedLocation(e.target.value)}
+              placeholder="Location Address"
+              className="edit-input"
+            />
+
+            <input
+              type="number"
+              step="any"
+              value={editedLatitude}
+              onChange={(e) => setEditedLatitude(e.target.value)}
+              placeholder="Latitude"
+              className="edit-input"
+            />
+
+            <input
+              type="number"
+              step="any"
+              value={editedLongitude}
+              onChange={(e) => setEditedLongitude(e.target.value)}
+              placeholder="Longitude"
+              className="edit-input"
             />
 
             <button

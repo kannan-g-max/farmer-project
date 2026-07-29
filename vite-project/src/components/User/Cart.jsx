@@ -9,16 +9,46 @@ export default function Cart({ cartItems, setCartItems }) {
       item.id === id ? { ...item, quantity: Math.max(1, item.quantity + change) } : item
     );
     setCartItems(updated);
-    localStorage.setItem('farmer_cart', JSON.stringify(updated));
+    localStorage.setItem('user_cart', JSON.stringify(updated));
   };
 
   const removeItem = (id) => {
     const updated = cartItems.filter(item => item.id !== id);
     setCartItems(updated);
-    localStorage.setItem('farmer_cart', JSON.stringify(updated));
+    localStorage.setItem('user_cart', JSON.stringify(updated));
   };
 
   const totalBill = cartItems.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+
+  const handleCheckout = async () => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      alert("Please login first!");
+      return;
+    }
+
+    try {
+      for (const item of cartItems) {
+        const response = await fetch(`http://localhost:8080/api/orders?productId=${item.id}&weight=${item.quantity}`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        if (!response.ok) {
+          const errData = await response.json().catch(() => ({}));
+          throw new Error(errData.message || `Failed to place order for ${item.name}`);
+        }
+      }
+
+      alert('Order Placed Successfully! 🎉');
+      setCartItems([]);
+      localStorage.setItem('user_cart', '[]');
+    } catch (err) {
+      console.error(err);
+      alert(err.message || 'Failed to checkout');
+    }
+  };
 
   return (
     <div className="cart-view-container" style={{ width: '100%', maxWidth: '600px' }}>
@@ -57,7 +87,7 @@ export default function Cart({ cartItems, setCartItems }) {
           {/* Checkout Card */}
           <div style={{ background: '#181818', border: '1px solid #222', padding: '20px', borderRadius: '14px', marginTop: '15px', textAlign: 'right' }}>
             <p style={{ margin: '0 0 15px 0', fontSize: '16px', color: '#aaa' }}>Total Amount: <span style={{ color: '#fff', fontSize: '22px', fontWeight: 'bold', marginLeft: '10px' }}>₹{totalBill}</span></p>
-            <button className="buy-trigger-btn" style={{ width: 'auto', padding: '12px 30px' }} onClick={() => alert('Order Placed Successfully! 🎉')}>Proceed to Checkout 🚀</button>
+            <button className="buy-trigger-btn" style={{ width: 'auto', padding: '12px 30px' }} onClick={handleCheckout}>Proceed to Checkout 🚀</button>
           </div>
         </div>
       )}

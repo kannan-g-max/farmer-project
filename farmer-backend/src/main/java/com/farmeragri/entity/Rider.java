@@ -21,15 +21,15 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "farmer_users")
-public class FarmerUser {
+@Table(name = "riders")
+public class Rider {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false, unique = true)
-    private String farmerId;
+    private String riderId;
 
     @Column(nullable = false)
     private String name;
@@ -37,7 +37,7 @@ public class FarmerUser {
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false, columnDefinition = "VARCHAR(20) DEFAULT 'FARMER'")
+    @Column(nullable = false, columnDefinition = "VARCHAR(20) DEFAULT 'DELIVERY'")
     private String role;
 
     @Column(columnDefinition = "BOOLEAN DEFAULT true")
@@ -56,36 +56,15 @@ public class FarmerUser {
     private Double longitude;
 
     @Column
-    private Double totalSales;
-
-    @Column
-    private Double rating;
-
-    @Column
-    private String bio;
-
-    @Column(columnDefinition = "LONGTEXT")
-    private String profileImage;
-
-    @Column(columnDefinition = "LONGTEXT")
-    private String coverImage;
-
-    @Column
     private LocalDateTime createdAt;
 
     @PrePersist
     public void prePersist() {
         if (role == null) {
-            role = "FARMER";
+            role = "DELIVERY";
         }
         if (active == null) {
             active = Boolean.TRUE;
-        }
-        if (totalSales == null) {
-            totalSales = 0.0;
-        }
-        if (rating == null) {
-            rating = 0.0;
         }
         if (createdAt == null) {
             createdAt = LocalDateTime.now();

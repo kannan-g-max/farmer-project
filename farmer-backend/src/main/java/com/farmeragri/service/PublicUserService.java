@@ -45,6 +45,12 @@ public class PublicUserService {
         if (request.getLocation() != null) {
             user.setLocation(request.getLocation().trim());
         }
+        if (request.getLatitude() != null) {
+            user.setLatitude(request.getLatitude());
+        }
+        if (request.getLongitude() != null) {
+            user.setLongitude(request.getLongitude());
+        }
         if (request.getBio() != null) {
             user.setBio(request.getBio().trim());
         }
@@ -62,6 +68,8 @@ public class PublicUserService {
                 .name(user.getName())
                 .phone(user.getPhone())
                 .location(user.getLocation())
+                .latitude(user.getLatitude())
+                .longitude(user.getLongitude())
                 .bio(user.getBio())
                 .profileImage(user.getProfileImage())
                 .build();

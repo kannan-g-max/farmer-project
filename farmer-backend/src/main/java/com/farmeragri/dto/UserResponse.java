@@ -11,6 +11,7 @@ public class UserResponse {
     private Long id;
     private String farmerId;
     private String email;
+    private String riderId;
     private String name;
     private String role;
 }

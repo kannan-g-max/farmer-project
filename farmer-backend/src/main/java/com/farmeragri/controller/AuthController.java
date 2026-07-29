@@ -27,4 +27,9 @@ public class AuthController {
     public ResponseEntity<SigninResponse> publicSignin(@Valid @RequestBody PublicSigninRequest request) {
         return ResponseEntity.ok(authService.signinPublic(request));
     }
+
+    @PostMapping("/api/rider/signin")
+    public ResponseEntity<SigninResponse> riderSignin(@Valid @RequestBody com.farmeragri.dto.RiderSigninRequest request) {
+        return ResponseEntity.ok(authService.signinRider(request));
+    }
 }

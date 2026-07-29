@@ -29,8 +29,8 @@ public class ProductController {
     }
 
     @GetMapping("/api/products/feed")
-    public ResponseEntity<List<ProductDTO>> feed() {
-        return ResponseEntity.ok(productService.getFeed());
+    public ResponseEntity<List<ProductDTO>> feed(@RequestHeader(value = "Authorization", required = false) String authorization) {
+        return ResponseEntity.ok(productService.getFeed(authorization));
     }
 
     @PostMapping(value = "/api/products/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
