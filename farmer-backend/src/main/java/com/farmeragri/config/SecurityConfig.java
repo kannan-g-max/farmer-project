@@ -53,6 +53,7 @@ public class SecurityConfig {
                                 "/api/farmer/signin",
                                 "/api/public/signin",
                                 "/api/rider/signin",
+                            "/api/admin/signin",
                                 "/api/farmer/apply",
                                 "/api/health",
                                 "/uploads/**",

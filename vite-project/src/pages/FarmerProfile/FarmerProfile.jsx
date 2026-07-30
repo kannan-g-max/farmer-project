@@ -14,6 +14,77 @@ const FarmerProfile = () => {
   const [showModal, setShowModal] = useState(false);
   const [openMenu, setOpenMenu] = useState(null);
 
+  // Product Edit Modal States
+  const [editingProduct, setEditingProduct] = useState(null);
+  const [editProdName, setEditProdName] = useState('');
+  const [editProdQty, setEditProdQty] = useState('');
+  const [editProdUnit, setEditProdUnit] = useState('kg');
+  const [editProdPrice, setEditProdPrice] = useState('');
+  const [editProdCategory, setEditProdCategory] = useState('Vegetables');
+  const [editProdDesc, setEditProdDesc] = useState('');
+
+  const handleStartEdit = (product) => {
+    setEditingProduct(product);
+    setEditProdName(product.name || '');
+    setEditProdQty(String(product.quantity ?? ''));
+    setEditProdUnit(product.unit || 'kg');
+    setEditProdPrice(String(product.price ?? ''));
+    setEditProdCategory(product.category || 'Others');
+    setEditProdDesc(product.description || '');
+    setOpenMenu(null);
+  };
+
+  const handleSaveProductEdit = async () => {
+    if (!editProdName.trim()) {
+      alert('Please enter product name');
+      return;
+    }
+    if (!editProdPrice.trim() || isNaN(editProdPrice) || Number(editProdPrice) <= 0) {
+      alert('Please enter valid price (greater than 0)');
+      return;
+    }
+    if (!editProdQty.trim() || isNaN(editProdQty) || Number(editProdQty) <= 0) {
+      alert('Please enter valid quantity (greater than 0)');
+      return;
+    }
+    if (!editProdDesc.trim()) {
+      alert('Please enter description');
+      return;
+    }
+
+    const token = localStorage.getItem('token');
+    try {
+      const qs = new URLSearchParams({
+        name: editProdName.trim(),
+        quantity: String(Number(editProdQty) || 0),
+        unit: editProdUnit,
+        price: String(Number(editProdPrice) || 0),
+        category: editProdCategory,
+        description: editProdDesc.trim()
+      });
+
+      const response = await fetch(`http://localhost:8080/api/products/${editingProduct.id}?${qs.toString()}`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      if (response.ok) {
+        const updated = await response.json();
+        setProducts(products.map(p => p.id === editingProduct.id ? { ...p, ...updated } : p));
+        const ts = String(Date.now());
+        localStorage.setItem('products_last_updated', ts);
+        window.dispatchEvent(new Event('products-updated'));
+        setEditingProduct(null);
+      } else {
+        alert('Failed to update product');
+      }
+    } catch (err) {
+      console.error('Error updating product:', err);
+      alert('Error updating product');
+    }
+  };
+
   const user = JSON.parse(localStorage.getItem('user') || '{}');
 
   const fetchProfile = async () => {
@@ -221,6 +292,8 @@ const FarmerProfile = () => {
   const getProductName = (product) => product.name || 'Untitled product';
   const getProductImage = (product) => product.imageUrl || '';
   const getProductPrice = (product) => product.price ?? '';
+  const getProductUnit = (product) => product.unit || 'kg';
+  const getProductCategory = (product) => product.category || 'Others';
 
   if (loading) {
     return (
@@ -416,10 +489,10 @@ const FarmerProfile = () => {
                   </p>
 
                   <p className="product-price">
-                    ₹{getProductPrice(product)}
+                    ₹{getProductPrice(product)} / {getProductUnit(product)}
                   </p>
                   <p className="product-category">
-                    🥬 Vegetables
+                    📦 {product.quantity} {getProductUnit(product)} | {getProductCategory(product)}
                   </p>
                   <p className="likes-count">
                     ❤️ {((product.id * 17) % 180) + 20} Likes
@@ -440,6 +513,9 @@ const FarmerProfile = () => {
                         if (response.ok) {
                           const updated = await response.json();
                           setProducts(products.map(p => p.id === product.id ? { ...p, inStock: updated.inStock } : p));
+                          const ts = String(Date.now());
+                          localStorage.setItem('products_last_updated', ts);
+                          window.dispatchEvent(new Event('products-updated'));
                         } else {
                           alert('Failed to update stock status');
                         }
@@ -468,29 +544,7 @@ const FarmerProfile = () => {
                       <div className="dropdown-menu">
                         <button
                           className="dropdown-item"
-                          onClick={async () => {
-                            const newCaption = prompt("Edit Caption", product.name);
-                            if (newCaption && newCaption.trim()) {
-                              const token = localStorage.getItem('token');
-                              try {
-                                const response = await fetch(`http://localhost:8080/api/products/${product.id}?name=${encodeURIComponent(newCaption.trim())}`, {
-                                  method: 'PUT',
-                                  headers: {
-                                    'Authorization': `Bearer ${token}`
-                                  }
-                                });
-                                if (response.ok) {
-                                  const updated = await response.json();
-                                  setProducts(products.map(p => p.id === product.id ? { ...p, name: updated.name } : p));
-                                } else {
-                                  alert('Failed to update product name');
-                                }
-                              } catch (err) {
-                                console.error('Error updating product:', err);
-                              }
-                            }
-                            setOpenMenu(null);
-                          }}
+                          onClick={() => handleStartEdit(product)}
                         >
                           ✏️ Edit
                         </button>
@@ -509,6 +563,9 @@ const FarmerProfile = () => {
                                 });
                                 if (response.ok) {
                                   setProducts(products.filter(p => p.id !== product.id));
+                                  const ts = String(Date.now());
+                                  localStorage.setItem('products_last_updated', ts);
+                                  window.dispatchEvent(new Event('products-updated'));
                                 } else {
                                   alert('Failed to delete product');
                                 }
@@ -594,6 +651,107 @@ const FarmerProfile = () => {
             <button
               className="cancel-btn"
               onClick={() => setShowModal(false)}
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
+
+      {editingProduct && (
+        <div className="edit-modal">
+          <div className="edit-modal-content" style={{ maxHeight: '90vh', overflowY: 'auto' }}>
+            <h2>Edit Product</h2>
+
+            <div className="form-group" style={{ width: '100%', marginBottom: '15px' }}>
+              <label style={{ display: 'block', marginBottom: '5px', fontSize: '13px', color: '#aaa', textAlign: 'left' }}>Product Name*</label>
+              <input
+                type="text"
+                value={editProdName}
+                onChange={(e) => setEditProdName(e.target.value)}
+                placeholder="Product name"
+                className="edit-input"
+                style={{ width: '100%', boxSizing: 'border-box' }}
+              />
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 100px', gap: '10px', marginBottom: '15px' }}>
+              <div className="form-group" style={{ textAlign: 'left' }}>
+                <label style={{ display: 'block', marginBottom: '5px', fontSize: '13px', color: '#aaa' }}>Quantity*</label>
+                <input
+                  type="number"
+                  step="any"
+                  value={editProdQty}
+                  onChange={(e) => setEditProdQty(e.target.value)}
+                  placeholder="Quantity"
+                  className="edit-input"
+                  style={{ width: '100%', boxSizing: 'border-box' }}
+                />
+              </div>
+              <div className="form-group" style={{ textAlign: 'left' }}>
+                <label style={{ display: 'block', marginBottom: '5px', fontSize: '13px', color: '#aaa' }}>Unit*</label>
+                <select
+                  value={editProdUnit}
+                  onChange={(e) => setEditProdUnit(e.target.value)}
+                  className="edit-input"
+                  style={{ width: '100%', height: '42px', boxSizing: 'border-box', background: '#1c1c1e', color: '#fff', border: '1px solid #333' }}
+                >
+                  <option value="kg">kg</option>
+                  <option value="piece">piece</option>
+                  <option value="liter">liter</option>
+                  <option value="pack">pack</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="form-group" style={{ width: '100%', marginBottom: '15px', textAlign: 'left' }}>
+              <label style={{ display: 'block', marginBottom: '5px', fontSize: '13px', color: '#aaa' }}>Price per Unit (₹)*</label>
+              <input
+                type="number"
+                step="any"
+                value={editProdPrice}
+                onChange={(e) => setEditProdPrice(e.target.value)}
+                placeholder="Price"
+                className="edit-input"
+                style={{ width: '100%', boxSizing: 'border-box' }}
+              />
+            </div>
+
+            <div className="form-group" style={{ width: '100%', marginBottom: '15px', textAlign: 'left' }}>
+              <label style={{ display: 'block', marginBottom: '5px', fontSize: '13px', color: '#aaa' }}>Category*</label>
+              <select
+                value={editProdCategory}
+                onChange={(e) => setEditProdCategory(e.target.value)}
+                className="edit-input"
+                style={{ width: '100%', height: '42px', boxSizing: 'border-box', background: '#1c1c1e', color: '#fff', border: '1px solid #333' }}
+              >
+                <option value="Vegetables">Vegetables</option>
+                <option value="Fruits">Fruits</option>
+                <option value="Others">Others</option>
+              </select>
+            </div>
+
+            <div className="form-group" style={{ width: '100%', marginBottom: '15px', textAlign: 'left' }}>
+              <label style={{ display: 'block', marginBottom: '5px', fontSize: '13px', color: '#aaa' }}>Product Description*</label>
+              <textarea
+                value={editProdDesc}
+                onChange={(e) => setEditProdDesc(e.target.value)}
+                placeholder="Description"
+                className="edit-bio"
+                style={{ width: '100%', boxSizing: 'border-box' }}
+              />
+            </div>
+
+            <button
+              className="save-btn"
+              onClick={handleSaveProductEdit}
+            >
+              Save Product
+            </button>
+
+            <button
+              className="cancel-btn"
+              onClick={() => setEditingProduct(null)}
             >
               Cancel
             </button>

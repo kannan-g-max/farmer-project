@@ -47,11 +47,19 @@ public class OrderService {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new ApiException(HttpStatus.NOT_FOUND, "Product not found"));
 
+        if (Boolean.FALSE.equals(product.getInStock())) {
+            throw new ApiException(HttpStatus.BAD_REQUEST, "Product is out of stock");
+        }
+
         FarmerUser farmer = farmerUserRepository.findById(product.getFarmerId())
                 .orElseThrow(() -> new ApiException(HttpStatus.NOT_FOUND, "Farmer not found"));
 
         if (weight == null || weight <= 0) {
-            throw new ApiException(HttpStatus.BAD_REQUEST, "Invalid weight quantity");
+            throw new ApiException(HttpStatus.BAD_REQUEST, "Invalid order quantity");
+        }
+
+        if (product.getQuantity() != null && product.getQuantity() < weight) {
+            throw new ApiException(HttpStatus.BAD_REQUEST, "Requested quantity exceeds available stock");
         }
 
         Double totalAmount = product.getPrice() * weight;
@@ -74,6 +82,15 @@ public class OrderService {
                 .totalAmount(totalAmount)
                 .status("PENDING")
                 .build());
+
+        if (product.getQuantity() != null) {
+            product.setQuantity(product.getQuantity() - weight);
+            if (product.getQuantity() <= 0) {
+                product.setQuantity(0.0);
+                product.setInStock(false);
+            }
+            productRepository.save(product);
+        }
 
         return toOrderDto(order, null);
     }
@@ -131,7 +148,7 @@ public class OrderService {
         Rider rider = riderRepository.findById(riderId)
                 .orElseThrow(() -> new ApiException(HttpStatus.NOT_FOUND, "Rider not found"));
 
-        return orderRepository.findByRiderId(riderId).stream()
+        return orderRepository.findByRiderIdAndStatusIn(riderId, List.of("ACCEPTED", "PICKED_UP")).stream()
                 .map(order -> {
                     Double dist = null;
                     Double farmerLatitude = resolveFarmerLatitude(order);
@@ -155,12 +172,8 @@ public class OrderService {
         Rider rider = riderRepository.findById(riderId)
                 .orElseThrow(() -> new ApiException(HttpStatus.NOT_FOUND, "Rider not found"));
 
-        Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new ApiException(HttpStatus.NOT_FOUND, "Order not found"));
-
-        if (!"PENDING".equals(order.getStatus())) {
-            throw new ApiException(HttpStatus.BAD_REQUEST, "Order is already accepted or delivered");
-        }
+        Order order = orderRepository.findByIdAndStatus(orderId, "PENDING")
+            .orElseThrow(() -> new ApiException(HttpStatus.BAD_REQUEST, "Order is already accepted or delivered"));
 
         order.setStatus("ACCEPTED");
         order.setRiderId(riderId);
@@ -172,6 +185,39 @@ public class OrderService {
         Double farmerLongitude = resolveFarmerLongitude(saved);
         if (rider.getLatitude() != null && rider.getLongitude() != null &&
             farmerLatitude != null && farmerLongitude != null) {
+            dist = calculateDistance(rider.getLatitude(), rider.getLongitude(), farmerLatitude, farmerLongitude);
+        }
+        return toOrderDto(saved, dist);
+    }
+
+    @Transactional
+    public OrderDTO pickUpOrder(String authorization, Long orderId) {
+        Claims claims = claimsFromAuthorization(authorization);
+        if (!"DELIVERY".equals(String.valueOf(claims.get("role")))) {
+            throw new ApiException(HttpStatus.FORBIDDEN, "Forbidden");
+        }
+        Long riderId = Long.valueOf(String.valueOf(claims.get("userId")));
+
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new ApiException(HttpStatus.NOT_FOUND, "Order not found"));
+
+        if (!Objects.equals(order.getRiderId(), riderId)) {
+            throw new ApiException(HttpStatus.FORBIDDEN, "You cannot update an order assigned to another rider");
+        }
+
+        if (!"ACCEPTED".equals(order.getStatus())) {
+            throw new ApiException(HttpStatus.BAD_REQUEST, "Only accepted orders can be marked as picked up");
+        }
+
+        order.setStatus("PICKED_UP");
+        Order saved = orderRepository.save(order);
+
+        Double dist = null;
+        Rider rider = riderRepository.findById(riderId).orElse(null);
+        Double farmerLatitude = resolveFarmerLatitude(saved);
+        Double farmerLongitude = resolveFarmerLongitude(saved);
+        if (rider != null && rider.getLatitude() != null && rider.getLongitude() != null
+                && farmerLatitude != null && farmerLongitude != null) {
             dist = calculateDistance(rider.getLatitude(), rider.getLongitude(), farmerLatitude, farmerLongitude);
         }
         return toOrderDto(saved, dist);
@@ -190,6 +236,10 @@ public class OrderService {
 
         if (!Objects.equals(order.getRiderId(), riderId)) {
             throw new ApiException(HttpStatus.FORBIDDEN, "You cannot deliver an order assigned to another rider");
+        }
+
+        if (!"PICKED_UP".equals(order.getStatus())) {
+            throw new ApiException(HttpStatus.BAD_REQUEST, "Order must be picked up before delivery");
         }
 
         order.setStatus("DELIVERED");
@@ -226,6 +276,7 @@ public class OrderService {
                 .productId(order.getProductId())
                 .itemName(order.getItemName())
                 .weight(order.getWeight())
+                .unit(resolveOrderUnit(order.getProductId()))
                 .price(order.getPrice())
                 .totalAmount(order.getTotalAmount())
                 .status(order.getStatus())
@@ -235,6 +286,12 @@ public class OrderService {
                 .deliveryPayout(deliveryPayout)
                 .createdAt(order.getCreatedAt())
                 .build();
+    }
+
+    private String resolveOrderUnit(Long productId) {
+        return productRepository.findById(productId)
+                .map(Product::getUnit)
+                .orElse("kg");
     }
 
     private Double resolveBuyerLatitude(Order order) {

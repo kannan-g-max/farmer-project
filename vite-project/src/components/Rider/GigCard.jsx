@@ -53,6 +53,31 @@ export default function GigCard({ gig, isActive, onRefresh }) {
     }
   };
 
+  const handlePickUp = async () => {
+    const token = localStorage.getItem('token');
+    if (!token) return;
+
+    try {
+      const response = await fetch(`http://localhost:8080/api/orders/${gig.id}/pickup`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (response.ok) {
+        alert(`Order ORD-${gig.id} marked as picked up successfully!`);
+        if (onRefresh) onRefresh();
+      } else {
+        const err = await response.json().catch(() => ({}));
+        alert(err.message || 'Failed to mark picked up');
+      }
+    } catch (error) {
+      console.error(error);
+      alert('Network error while marking picked up');
+    }
+  };
+
   const openGoogleMaps = (lat, lon) => {
     if (lat === null || lat === undefined || lat === '' || lon === null || lon === undefined || lon === '') {
       alert("Coordinates not available for this location.");
@@ -72,10 +97,17 @@ export default function GigCard({ gig, isActive, onRefresh }) {
     window.open(url, '_blank', 'noopener,noreferrer');
   };
 
+  const getTagColor = () => {
+    if (!isActive) return '#22c55e';
+    if (gig.status === 'ACCEPTED') return '#3b82f6';
+    if (gig.status === 'PICKED_UP') return '#a3e635';
+    return '#22c55e';
+  };
+
   return (
     <div className="gig-professional-card" style={{ border: isActive ? '1px dashed #3b82f6' : '1px solid #222' }}>
       <div className="gig-card-left">
-        <div className="gig-id-tag" style={{ background: isActive ? '#3b82f6' : '#22c55e' }}>
+        <div className="gig-id-tag" style={{ background: getTagColor() }}>
           ORD-{gig.id}
         </div>
         <div className="gig-weight-indicator">
@@ -135,13 +167,23 @@ export default function GigCard({ gig, isActive, onRefresh }) {
         <div className="item-badge">📦 {gig.itemName}</div>
         
         {isActive ? (
-          <button 
-            className="accept-gig-btn" 
-            style={{ background: '#22c55e', color: '#121212' }} 
-            onClick={handleDeliver}
-          >
-            Mark Delivered ✓
-          </button>
+          gig.status === 'ACCEPTED' ? (
+            <button 
+              className="accept-gig-btn" 
+              style={{ background: '#eab308', color: '#121212' }} 
+              onClick={handlePickUp}
+            >
+              Mark Picked Up 📦
+            </button>
+          ) : (
+            <button 
+              className="accept-gig-btn" 
+              style={{ background: '#22c55e', color: '#121212' }} 
+              onClick={handleDeliver}
+            >
+              Mark Delivered ✓
+            </button>
+          )
         ) : (
           <button className="accept-gig-btn" onClick={handleAccept}>
             Accept Job →

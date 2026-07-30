@@ -37,6 +37,15 @@ public class Product {
     @Column(nullable = false)
     private Double price;
 
+    @Column(nullable = false)
+    private Double quantity;
+
+    @Column(nullable = false)
+    private String unit;
+
+    @Column(nullable = false)
+    private String category;
+
     @Column
     private String description;
 
@@ -57,6 +66,12 @@ public class Product {
         }
         if (inStock == null) {
             inStock = true;
+        }
+        if (unit == null || unit.isBlank()) {
+            unit = "kg";
+        }
+        if (category == null || category.isBlank()) {
+            category = "Others";
         }
     }
 }

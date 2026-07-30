@@ -37,6 +37,8 @@ export default function MyOrders() {
         return { text: 'Pending (Searching Rider...) 🔍', color: '#eab308' };
       case 'ACCEPTED':
         return { text: 'Rider Assigned (On the Way) 🚚', color: '#3b82f6' };
+      case 'PICKED_UP':
+        return { text: 'Picked Up (On the Way) 🛵', color: '#a3e635' };
       case 'DELIVERED':
         return { text: 'Delivered ✅', color: '#22c55e' };
       default:

@@ -5,6 +5,33 @@
   font-family: 'Inter', sans-serif;
 }
 
+.range-slider-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.filter-control-block {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.distance-control-block .distance-badge-glow {
+  background: rgba(59, 130, 246, 0.12);
+  border-color: rgba(59, 130, 246, 0.4);
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.15);
+}
+
+.distance-slider-premium::-webkit-slider-thumb {
+  border-color: #3b82f6;
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.6), 0 4px 8px rgba(0,0,0,0.5);
+}
+
+.distance-slider-premium::-webkit-slider-thumb:hover {
+  background: #3b82f6;
+}
+
 /* PREMIUM FILTER CARD BACKGROUND GLOW */
 .filter-header-card.professional-glass {
   background: linear-gradient(135deg, #141617 0%, #0d0f10 100%);

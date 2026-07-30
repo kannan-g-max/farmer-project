@@ -9,6 +9,7 @@ import Market from './components/Market/Market';
 import CreatePost from './pages/CreatePost/CreatePost';
 import RiderDashboard from './components/Rider/DeliveryDashboard';
 import PublicMarketFeed from './components/User/MarketFeed';
+import AdminDashboard from './components/Admin/AdminDashboard';
 import './App.css';
 
 function App() {
@@ -19,12 +20,15 @@ function App() {
   const isFarmer = normalizedRole === 'FARMER' || normalizedRole === '';
   const isPublicUser = normalizedRole === 'PUBLIC';
   const isDeliveryUser = normalizedRole === 'DELIVERY';
+  const isAdminUser = normalizedRole === 'ADMIN';
 
   const homeRoute = isPublicUser
     ? '/market-feed'
     : isDeliveryUser
       ? '/delivery-dashboard'
-      : '/profile-feed';
+      : isAdminUser
+        ? '/admin-dashboard'
+        : '/profile-feed';
 
   const handleLogin = (role = '') => {
     localStorage.setItem('isLoggedIn', 'true');
@@ -49,7 +53,7 @@ function App() {
       <div className="desktop-agri-dashboard">
         {isAuthenticated && isFarmer && <Sidebar onLogout={handleLogout} />}
 
-        <main className={isAuthenticated && isFarmer ? "dashboard-content" : "full-screen-auth"}>
+        <main className={isAuthenticated && isFarmer ? "dashboard-content" : isAuthenticated ? "role-shell-content" : "full-screen-auth"}>
           <Routes>
             <Route path="/login" element={!isAuthenticated ? <Login onLogin={handleLogin} /> : <Navigate to={homeRoute} />} />
 
@@ -62,6 +66,7 @@ function App() {
             <Route path="/market" element={isAuthenticated && isFarmer ? <Market /> : <Navigate to={isAuthenticated ? homeRoute : '/login'} />} />
             <Route path="/create" element={isAuthenticated && isFarmer ? <CreatePost /> : <Navigate to={isAuthenticated ? homeRoute : '/login'} />} />
             <Route path="/farmer-profile" element={isAuthenticated && isFarmer ? <FarmerProfile /> : <Navigate to={isAuthenticated ? homeRoute : '/login'} />} />
+            <Route path="/admin-dashboard" element={isAuthenticated && isAdminUser ? <AdminDashboard onLogout={handleLogout} /> : <Navigate to={isAuthenticated ? homeRoute : '/login'} />} />
             
             {/* 🔥 FIX: Rider Dashboard Route-ku onLogout Prop perfectly map panniyachu */}
             <Route 

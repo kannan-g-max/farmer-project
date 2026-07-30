@@ -1,12 +1,15 @@
 package com.farmeragri.service;
 
 import com.farmeragri.dto.FarmerSigninRequest;
+import com.farmeragri.dto.AdminSigninRequest;
 import com.farmeragri.dto.PublicSigninRequest;
 import com.farmeragri.dto.SigninResponse;
 import com.farmeragri.dto.UserResponse;
+import com.farmeragri.entity.AdminUser;
 import com.farmeragri.entity.FarmerUser;
 import com.farmeragri.entity.PublicUser;
 import com.farmeragri.exception.ApiException;
+import com.farmeragri.repository.AdminUserRepository;
 import com.farmeragri.repository.FarmerUserRepository;
 import com.farmeragri.repository.PublicUserRepository;
 import com.farmeragri.security.JwtService;
@@ -19,11 +22,30 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AuthService {
 
+        private final AdminUserRepository adminUserRepository;
     private final FarmerUserRepository farmerUserRepository;
     private final PublicUserRepository publicUserRepository;
     private final com.farmeragri.repository.RiderRepository riderRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
+
+    public SigninResponse signinAdmin(AdminSigninRequest request) {
+        AdminUser admin = adminUserRepository.findByAdminId(request.getAdminId())
+                .filter(AdminUser::getActive)
+                .filter(user -> passwordEncoder.matches(request.getPassword(), user.getPassword()))
+                .orElseThrow(() -> new ApiException(HttpStatus.UNAUTHORIZED, "Invalid admin ID or password"));
+
+        return SigninResponse.builder()
+                .token(jwtService.generateToken(admin.getAdminId(), admin.getId(), admin.getRole()))
+                .user(UserResponse.builder()
+                        .id(admin.getId())
+                        .adminId(admin.getAdminId())
+                        .name(admin.getName())
+                        .role(admin.getRole())
+                        .build())
+                .message("Login successful")
+                .build();
+    }
 
     public SigninResponse signinRider(com.farmeragri.dto.RiderSigninRequest request) {
         com.farmeragri.entity.Rider rider = riderRepository.findByRiderId(request.getRiderId())

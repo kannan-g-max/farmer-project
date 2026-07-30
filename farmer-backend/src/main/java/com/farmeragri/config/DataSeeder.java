@@ -1,9 +1,11 @@
 package com.farmeragri.config;
 
 import com.farmeragri.entity.FarmerUser;
+import com.farmeragri.entity.AdminUser;
 import com.farmeragri.entity.Product;
 import com.farmeragri.entity.PublicUser;
 import com.farmeragri.entity.Rider;
+import com.farmeragri.repository.AdminUserRepository;
 import com.farmeragri.repository.FarmerUserRepository;
 import com.farmeragri.repository.ProductRepository;
 import com.farmeragri.repository.PublicUserRepository;
@@ -24,8 +26,20 @@ public class DataSeeder {
     CommandLineRunner seedUsers(FarmerUserRepository farmerUserRepository,
                                 PublicUserRepository publicUserRepository,
                                 RiderRepository riderRepository,
+                                AdminUserRepository adminUserRepository,
                                 ProductRepository productRepository) {
         return args -> {
+            if (adminUserRepository.findByAdminId("ADMIN001").isEmpty()) {
+                adminUserRepository.save(AdminUser.builder()
+                        .adminId("ADMIN001")
+                        .email("admin@example.com")
+                        .name("System Admin")
+                        .password(passwordEncoder.encode("Admin@123"))
+                        .role("ADMIN")
+                        .active(true)
+                        .build());
+            }
+
             FarmerUser farmer;
             if (farmerUserRepository.findByFarmerId("FARM001").isEmpty()) {
                 farmer = farmerUserRepository.save(FarmerUser.builder()
@@ -75,7 +89,10 @@ public class DataSeeder {
                 productRepository.save(Product.builder()
                         .farmerId(farmer.getId())
                         .name("Fresh Spinach")
+                    .quantity(25.0)
+                    .unit("kg")
                         .price(25.0)
+                    .category("Vegetables")
                         .description("Organic fresh spinach")
                         .imageUrl(null)
                         .build());

@@ -27,6 +27,7 @@ public class OrderDTO {
     private Long productId;
     private String itemName;
     private Double weight;
+    private String unit;
     private Double price;
     private Double totalAmount;
     private String status;
@@ -52,6 +53,7 @@ public class OrderDTO {
                 .productId(order.getProductId())
                 .itemName(order.getItemName())
                 .weight(order.getWeight())
+                .unit("kg")
                 .price(order.getPrice())
                 .totalAmount(order.getTotalAmount())
                 .status(order.getStatus())

@@ -9,6 +9,7 @@ import lombok.Getter;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserResponse {
     private Long id;
+    private String adminId;
     private String farmerId;
     private String email;
     private String riderId;

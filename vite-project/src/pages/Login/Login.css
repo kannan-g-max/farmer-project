@@ -39,8 +39,8 @@
 .login-header h2 span { color: #22c55e; }
 .login-header p { color: #e2e8f0; font-size: 14px; margin-bottom: 30px; }
 
-.role-selector { display: flex; background: rgba(0, 0, 0, 0.4); padding: 5px; border-radius: 15px; margin-bottom: 25px; }
-.role-selector button { flex: 1; padding: 12px; border: none; background: transparent; color: #cbd5e1; font-weight: 600; cursor: pointer; border-radius: 10px; transition: 0.3s; }
+.role-selector { display: flex; flex-wrap: wrap; gap: 8px; background: rgba(0, 0, 0, 0.4); padding: 5px; border-radius: 15px; margin-bottom: 25px; }
+.role-selector button { flex: 1 1 calc(50% - 4px); padding: 12px; border: none; background: transparent; color: #cbd5e1; font-weight: 600; cursor: pointer; border-radius: 10px; transition: 0.3s; }
 .role-selector button.active { background: rgba(255, 255, 255, 0.2); color: white; }
 
 .input-field { margin-bottom: 15px; }
@@ -50,5 +50,6 @@
 .login-btn.farmer { background: #22c55e; color: #052e16; }
 .login-btn.customer { background: #3b82f6; color: #eff6ff; }
 .login-btn.delivery { background: #f59e0b; color: #451a03; }
+.login-btn.admin { background: #ef4444; color: #fff; }
 
 .footer-links { margin-top: 25px; display: flex; justify-content: space-between; font-size: 13px; color: #94a3b8; cursor: pointer; }

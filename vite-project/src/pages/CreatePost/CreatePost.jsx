@@ -6,7 +6,10 @@ const CreatePost = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [selectedImg, setSelectedImg] = useState(null);
   const [productName, setProductName] = useState('');
+  const [quantity, setQuantity] = useState('');
+  const [unit, setUnit] = useState('kg');
   const [price, setPrice] = useState('');
+  const [category, setCategory] = useState('Vegetables');
   const [description, setDescription] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -29,8 +32,12 @@ const CreatePost = () => {
       alert('Please enter product name');
       return;
     }
-    if (!price.trim() || isNaN(price)) {
-      alert('Please enter valid price');
+    if (!price.trim() || isNaN(price) || Number(price) <= 0) {
+      alert('Please enter valid price (greater than 0)');
+      return;
+    }
+    if (!quantity.trim() || isNaN(quantity) || Number(quantity) <= 0) {
+      alert('Please enter valid quantity');
       return;
     }
     if (!description.trim()) {
@@ -43,7 +50,10 @@ const CreatePost = () => {
       const formData = new FormData();
       formData.append('file', selectedFile);
       formData.append('name', productName);
+      formData.append('quantity', parseFloat(quantity));
+      formData.append('unit', unit);
       formData.append('price', parseFloat(price));
+      formData.append('category', category);
       formData.append('description', description);
 
       const token = localStorage.getItem('token');
@@ -56,6 +66,9 @@ const CreatePost = () => {
       const data = await response.json().catch(() => ({}));
 
       if (response.ok) {
+        const ts = String(Date.now());
+        localStorage.setItem('products_last_updated', ts);
+        window.dispatchEvent(new Event('products-updated'));
         alert('Product posted successfully!');
         navigate('/profile-feed');
       } else {
@@ -73,7 +86,10 @@ const CreatePost = () => {
     setSelectedFile(null);
     setSelectedImg(null);
     setProductName('');
+    setQuantity('');
+    setUnit('kg');
     setPrice('');
+    setCategory('Vegetables');
     setDescription('');
     if (fileInputRef.current) fileInputRef.current.value = '';
   };
@@ -118,9 +134,35 @@ const CreatePost = () => {
               </div>
 
               <div className="form-group">
+                <div className="field-row">
+                  <input 
+                    type="number" 
+                    placeholder="Available quantity*" 
+                    value={quantity}
+                    onChange={(e) => setQuantity(e.target.value)}
+                    className="product-input"
+                    disabled={loading}
+                    min="0"
+                    step="0.01"
+                  />
+                  <select
+                    className="product-input"
+                    value={unit}
+                    onChange={(e) => setUnit(e.target.value)}
+                    disabled={loading}
+                  >
+                    <option value="kg">kg</option>
+                    <option value="piece">piece</option>
+                    <option value="liter">liter</option>
+                    <option value="pack">pack</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="form-group">
                 <input 
                   type="number" 
-                  placeholder="Price (₹)*" 
+                  placeholder={`Price per ${unit} (₹)*`} 
                   value={price}
                   onChange={(e) => setPrice(e.target.value)}
                   className="product-input"
@@ -128,6 +170,19 @@ const CreatePost = () => {
                   min="0"
                   step="0.01"
                 />
+              </div>
+
+              <div className="form-group">
+                <select
+                  className="product-input"
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
+                  disabled={loading}
+                >
+                  <option value="Vegetables">Vegetables</option>
+                  <option value="Fruits">Fruits</option>
+                  <option value="Others">Others</option>
+                </select>
               </div>
 
               <div className="form-group">

@@ -33,7 +33,7 @@ public class ProductService {
     private String baseUrl = "http://localhost:8080";
 
     public List<ProductDTO> getFarmerProducts(Long farmerId) {
-        return productRepository.findByFarmerId(farmerId).stream()
+        return productRepository.findByFarmerIdOrderByCreatedAtDesc(farmerId).stream()
                 .map(this::toProductDto)
                 .toList();
     }
@@ -51,23 +51,26 @@ public class ProductService {
         }
 
         final PublicUser finalBuyer = buyer;
-        List<Product> allProducts = productRepository.findAll();
+        List<Product> allProducts = productRepository.findByInStockTrueOrderByCreatedAtDesc();
 
         if (finalBuyer != null && finalBuyer.getLatitude() != null && finalBuyer.getLongitude() != null) {
             return allProducts.stream()
                     .map(product -> {
                         FarmerUser farmer = farmerUserRepository.findById(product.getFarmerId()).orElse(null);
-                        if (farmer == null || farmer.getLatitude() == null || farmer.getLongitude() == null) {
+                        if (farmer == null) {
                             return null;
                         }
-                        double distance = OrderService.calculateDistance(
-                                finalBuyer.getLatitude(), finalBuyer.getLongitude(),
-                                farmer.getLatitude(), farmer.getLongitude()
-                        );
-                        if (distance > 50.0) {
-                            return null;
+                        String distanceStr = null;
+                        if (farmer.getLatitude() != null && farmer.getLongitude() != null) {
+                            double distance = OrderService.calculateDistance(
+                                    finalBuyer.getLatitude(), finalBuyer.getLongitude(),
+                                    farmer.getLatitude(), farmer.getLongitude()
+                            );
+                            if (distance > 50.0) {
+                                return null;
+                            }
+                            distanceStr = String.format(java.util.Locale.ROOT, "%.1f km", distance);
                         }
-                        String distanceStr = String.format(java.util.Locale.ROOT, "%.1f km", distance);
                         return ProductDTO.from(product, farmer, distanceStr, resolvePublicImageUrl(product.getImageUrl()));
                     })
                     .filter(java.util.Objects::nonNull)
@@ -83,13 +86,25 @@ public class ProductService {
     public ProductDTO uploadProduct(String authorization,
                                     MultipartFile file,
                                     String name,
+                                    Double quantity,
+                                    String unit,
                                     Double price,
+                                    String category,
                                     String description) {
         if (!StringUtils.hasText(name)) {
             throw new ApiException(HttpStatus.BAD_REQUEST, "Name is required");
         }
+        if (quantity == null || quantity <= 0) {
+            throw new ApiException(HttpStatus.BAD_REQUEST, "Quantity must be greater than 0");
+        }
+        if (!StringUtils.hasText(unit)) {
+            throw new ApiException(HttpStatus.BAD_REQUEST, "Unit is required");
+        }
         if (price == null) {
             throw new ApiException(HttpStatus.BAD_REQUEST, "Price is required");
+        }
+        if (!StringUtils.hasText(category)) {
+            throw new ApiException(HttpStatus.BAD_REQUEST, "Category is required");
         }
         if (!StringUtils.hasText(description)) {
             throw new ApiException(HttpStatus.BAD_REQUEST, "Description is required");
@@ -109,7 +124,10 @@ public class ProductService {
         Product product = productRepository.save(Product.builder()
                 .farmerId(farmerId)
                 .name(name.trim())
+            .quantity(quantity)
+            .unit(normalizeUnit(unit))
                 .price(price)
+            .category(normalizeCategory(category))
                 .description(description.trim())
                 .imageUrl(response.getFileUrl())
                 .inStock(true)
@@ -158,7 +176,14 @@ public class ProductService {
     }
 
     @Transactional
-    public ProductDTO updateProduct(String authorization, Long productId, String name, Double price, String description) {
+    public ProductDTO updateProduct(String authorization,
+                                    Long productId,
+                                    String name,
+                                    Double quantity,
+                                    String unit,
+                                    Double price,
+                                    String category,
+                                    String description) {
         Claims claims = claimsFromAuthorization(authorization);
         if (!"FARMER".equals(String.valueOf(claims.get("role")))) {
             throw new ApiException(HttpStatus.FORBIDDEN, "Forbidden");
@@ -175,11 +200,30 @@ public class ProductService {
         if (name != null && !name.trim().isEmpty()) {
             product.setName(name.trim());
         }
+        if (quantity != null) {
+            if (quantity <= 0) {
+                throw new ApiException(HttpStatus.BAD_REQUEST, "Quantity must be greater than 0");
+            }
+            product.setQuantity(quantity);
+        }
+        if (unit != null && !unit.trim().isEmpty()) {
+            product.setUnit(normalizeUnit(unit));
+        }
         if (price != null) {
             product.setPrice(price);
         }
+        if (category != null && !category.trim().isEmpty()) {
+            product.setCategory(normalizeCategory(category));
+        }
         if (description != null && !description.trim().isEmpty()) {
             product.setDescription(description.trim());
+        }
+
+        if (product.getQuantity() != null && product.getQuantity() <= 0) {
+            product.setQuantity(0.0);
+            product.setInStock(false);
+        } else {
+            product.setInStock(true);
         }
 
         Product saved = productRepository.save(product);
@@ -211,5 +255,20 @@ public class ProductService {
             return imageUrl;
         }
         return baseUrl + imageUrl;
+    }
+
+    private String normalizeCategory(String category) {
+        String normalized = category == null ? "" : category.trim();
+        if (normalized.equalsIgnoreCase("vegetables")) {
+            return "Vegetables";
+        }
+        if (normalized.equalsIgnoreCase("fruits")) {
+            return "Fruits";
+        }
+        return "Others";
+    }
+
+    private String normalizeUnit(String unit) {
+        return unit == null ? "kg" : unit.trim().toLowerCase();
     }
 }

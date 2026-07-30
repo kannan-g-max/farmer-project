@@ -16,13 +16,17 @@ const Login = ({ onLogin }) => {
       ? '/api/farmer/signin' 
       : role === 'delivery' 
         ? '/api/rider/signin' 
-        : '/api/public/signin';
+        : role === 'admin'
+          ? '/api/admin/signin'
+          : '/api/public/signin';
 
     const payload = role === 'farmer' 
       ? { farmerId: credential, password } 
       : role === 'delivery' 
         ? { riderId: credential, password } 
-        : { email: credential, password };
+        : role === 'admin'
+          ? { adminId: credential, password }
+          : { email: credential, password };
 
     try {
       setIsLoading(true);
@@ -41,13 +45,14 @@ const Login = ({ onLogin }) => {
 
       if (data.token) localStorage.setItem('token', data.token);
       if (data.user) localStorage.setItem('user', JSON.stringify(data.user));
-      const userRole = (data.user?.role || (role === 'customer' ? 'PUBLIC' : role === 'delivery' ? 'DELIVERY' : 'FARMER')).toUpperCase();
+      const userRole = (data.user?.role || (role === 'customer' ? 'PUBLIC' : role === 'delivery' ? 'DELIVERY' : role === 'admin' ? 'ADMIN' : 'FARMER')).toUpperCase();
       localStorage.setItem('isLoggedIn', 'true');
       localStorage.setItem('authRole', userRole);
       if (onLogin) onLogin(userRole);
 
       if (userRole === 'FARMER') navigate('/farmer-profile');
       else if (userRole === 'DELIVERY') navigate('/delivery-dashboard');
+      else if (userRole === 'ADMIN') navigate('/admin-dashboard');
       else navigate('/market-feed');
     } catch (error) {
       console.error(error);
@@ -70,6 +75,7 @@ const Login = ({ onLogin }) => {
           <button className={role === 'farmer' ? 'active' : ''} onClick={() => setRole('farmer')}>🚜 Farmer</button>
           <button className={role === 'customer' ? 'active' : ''} onClick={() => setRole('customer')}>🛒 User</button>
           <button className={role === 'delivery' ? 'active' : ''} onClick={() => setRole('delivery')}>🚀 Rider</button>
+          <button className={role === 'admin' ? 'active' : ''} onClick={() => setRole('admin')}>🛡️ Admin</button>
         </div>
 
         <form onSubmit={handleLogin} className="login-form">

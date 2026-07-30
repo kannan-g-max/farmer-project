@@ -1,6 +1,7 @@
 package com.farmeragri.controller;
 
 import com.farmeragri.dto.FarmerSigninRequest;
+import com.farmeragri.dto.AdminSigninRequest;
 import com.farmeragri.dto.PublicSigninRequest;
 import com.farmeragri.dto.SigninResponse;
 import com.farmeragri.service.AuthService;
@@ -31,5 +32,10 @@ public class AuthController {
     @PostMapping("/api/rider/signin")
     public ResponseEntity<SigninResponse> riderSignin(@Valid @RequestBody com.farmeragri.dto.RiderSigninRequest request) {
         return ResponseEntity.ok(authService.signinRider(request));
+    }
+
+    @PostMapping("/api/admin/signin")
+    public ResponseEntity<SigninResponse> adminSignin(@Valid @RequestBody AdminSigninRequest request) {
+        return ResponseEntity.ok(authService.signinAdmin(request));
     }
 }

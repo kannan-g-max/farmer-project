@@ -1,0 +1,355 @@
+.admin-dashboard-layout {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+  background:
+    radial-gradient(circle at top left, rgba(34, 197, 94, 0.12), transparent 30%),
+    radial-gradient(circle at top right, rgba(239, 68, 68, 0.12), transparent 24%),
+    #080808;
+  color: #f8fafc;
+}
+
+.admin-sidebar {
+  width: 280px;
+  flex: 0 0 280px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 28px 20px;
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(9, 9, 11, 0.92);
+  backdrop-filter: blur(14px);
+}
+
+.admin-brand-zone h2,
+.admin-top-strip h1 {
+  margin: 0;
+}
+
+.admin-brand-zone h2 span,
+.admin-top-strip h1 span {
+  color: #22c55e;
+}
+
+.role-pill.admin {
+  display: inline-flex;
+  margin-top: 10px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(239, 68, 68, 0.18);
+  color: #fca5a5;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.admin-sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 28px;
+}
+
+.admin-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid transparent;
+  background: rgba(255, 255, 255, 0.03);
+  color: #cbd5e1;
+  padding: 14px 16px;
+  border-radius: 14px;
+  cursor: pointer;
+  text-align: left;
+  transition: 0.2s ease;
+}
+
+.admin-nav-item.active,
+.admin-nav-item:hover {
+  background: rgba(34, 197, 94, 0.12);
+  border-color: rgba(34, 197, 94, 0.22);
+  color: #fff;
+}
+
+.admin-sidebar-footer {
+  margin-top: 24px;
+}
+
+.admin-logout-btn,
+.approve-btn,
+.reject-btn,
+.toggle-status-btn {
+  border: none;
+  border-radius: 12px;
+  padding: 12px 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.admin-logout-btn {
+  width: 100%;
+  background: rgba(239, 68, 68, 0.16);
+  color: #fecaca;
+}
+
+.admin-main-viewport {
+  flex: 1;
+  min-width: 0;
+  padding: 28px;
+  overflow: auto;
+}
+
+.admin-top-strip {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.section-kicker {
+  margin: 0 0 8px;
+  color: #86efac;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.section-summary {
+  margin: 10px 0 0;
+  color: #94a3b8;
+}
+
+.admin-notice {
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: rgba(34, 197, 94, 0.12);
+  color: #bbf7d0;
+  border: 1px solid rgba(34, 197, 94, 0.22);
+}
+
+.admin-loading-card,
+.admin-list-card,
+.admin-detail-card,
+.admin-stat-card,
+.account-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.24);
+}
+
+.admin-loading-card {
+  padding: 24px;
+}
+
+.admin-overview-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.admin-stat-card {
+  padding: 20px;
+}
+
+.admin-stat-card span,
+.account-meta span,
+.card-heading-row span {
+  color: #94a3b8;
+  font-size: 13px;
+}
+
+.admin-stat-card strong {
+  display: block;
+  margin-top: 10px;
+  font-size: 34px;
+}
+
+.admin-split-panel {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 18px;
+}
+
+.admin-list-card,
+.admin-detail-card {
+  padding: 20px;
+}
+
+.card-heading-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.card-heading-row.compact h2,
+.card-heading-row h2 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.admin-record-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.admin-record-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 14px 16px;
+  background: rgba(0, 0, 0, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  color: inherit;
+  border-radius: 14px;
+  text-align: left;
+}
+
+.admin-record-item p,
+.account-card p,
+.detail-grid p {
+  margin: 4px 0 0;
+  color: #94a3b8;
+}
+
+.admin-record-item.selected {
+  border-color: rgba(34, 197, 94, 0.3);
+  background: rgba(34, 197, 94, 0.08);
+}
+
+.status-pill {
+  display: inline-flex;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.status-pill.pending {
+  color: #fde68a;
+  background: rgba(234, 179, 8, 0.14);
+}
+
+.status-pill.approved,
+.status-pill.active {
+  color: #bbf7d0;
+  background: rgba(34, 197, 94, 0.14);
+}
+
+.status-pill.rejected,
+.status-pill.inactive {
+  color: #fecaca;
+  background: rgba(239, 68, 68, 0.14);
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.detail-grid label {
+  display: block;
+  color: #94a3b8;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.detail-grid p {
+  margin-top: 6px;
+  color: #f8fafc;
+}
+
+.admin-action-row {
+  display: flex;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.approve-btn {
+  background: #22c55e;
+  color: #052e16;
+}
+
+.reject-btn {
+  background: rgba(239, 68, 68, 0.15);
+  color: #fecaca;
+}
+
+.toggle-status-btn {
+  margin-top: 16px;
+  width: 100%;
+  background: rgba(59, 130, 246, 0.15);
+  color: #bfdbfe;
+}
+
+.admin-record-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.account-card {
+  padding: 18px;
+}
+
+.account-meta {
+  display: grid;
+  gap: 6px;
+  margin-top: 14px;
+}
+
+.empty-state-text {
+  color: #94a3b8;
+}
+
+@media (max-width: 1120px) {
+  .admin-dashboard-layout {
+    flex-direction: column;
+  }
+
+  .admin-sidebar {
+    width: 100%;
+    flex-basis: auto;
+  }
+
+  .admin-sidebar-nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .admin-nav-item {
+    flex: 1 1 calc(50% - 10px);
+  }
+
+  .admin-split-panel,
+  .admin-overview-grid,
+  .admin-record-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .admin-main-viewport {
+    padding: 18px;
+  }
+
+  .admin-top-strip {
+    flex-direction: column;
+  }
+
+  .detail-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-action-row {
+    flex-direction: column;
+  }
+}

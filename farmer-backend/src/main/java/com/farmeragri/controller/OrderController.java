@@ -53,6 +53,12 @@ public class OrderController {
         return ResponseEntity.ok(orderService.deliverOrder(authorization, orderId));
     }
 
+    @PostMapping("/api/orders/{orderId}/pickup")
+    public ResponseEntity<OrderDTO> pickUpOrder(@RequestHeader("Authorization") String authorization,
+                                                @PathVariable Long orderId) {
+        return ResponseEntity.ok(orderService.pickUpOrder(authorization, orderId));
+    }
+
     @GetMapping("/api/orders/{orderId}/status")
     public ResponseEntity<OrderDTO> getOrderStatus(@PathVariable Long orderId) {
         return ResponseEntity.ok(orderService.getOrderStatus(orderId));

@@ -37,9 +37,12 @@ public class ProductController {
     public ResponseEntity<ProductDTO> upload(@RequestHeader("Authorization") String authorization,
                                              @RequestParam("file") MultipartFile file,
                                              @RequestParam("name") String name,
+                                             @RequestParam("quantity") Double quantity,
+                                             @RequestParam("unit") String unit,
                                              @RequestParam("price") Double price,
+                                             @RequestParam("category") String category,
                                              @RequestParam("description") String description) {
-        return ResponseEntity.ok(productService.uploadProduct(authorization, file, name, price, description));
+        return ResponseEntity.ok(productService.uploadProduct(authorization, file, name, quantity, unit, price, category, description));
     }
 
     @DeleteMapping("/api/products/{productId}")
@@ -60,8 +63,11 @@ public class ProductController {
     public ResponseEntity<ProductDTO> updateProduct(@RequestHeader("Authorization") String authorization,
                                                     @PathVariable Long productId,
                                                     @RequestParam(value = "name", required = false) String name,
+                                                    @RequestParam(value = "quantity", required = false) Double quantity,
+                                                    @RequestParam(value = "unit", required = false) String unit,
                                                     @RequestParam(value = "price", required = false) Double price,
+                                                    @RequestParam(value = "category", required = false) String category,
                                                     @RequestParam(value = "description", required = false) String description) {
-        return ResponseEntity.ok(productService.updateProduct(authorization, productId, name, price, description));
+        return ResponseEntity.ok(productService.updateProduct(authorization, productId, name, quantity, unit, price, category, description));
     }
 }
