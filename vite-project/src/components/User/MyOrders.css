@@ -1,0 +1,73 @@
+.orders-view-container {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  font-family: 'Inter', sans-serif;
+  color: #ffffff;
+}
+
+.orders-title-text {
+  font-size: 24px;
+  font-weight: 800;
+  margin-bottom: 24px;
+  color: #22c55e;
+}
+
+.orders-stack-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.order-history-row-card {
+  background: #141414;
+  border: 1px solid #222222;
+  border-radius: 14px;
+  padding: 18px;
+  box-sizing: border-box;
+}
+
+.order-meta-header-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  font-size: 13px;
+  color: #888888;
+  border-bottom: 1px solid #1c1c1c;
+  padding-bottom: 10px;
+}
+
+.order-id-highlight {
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.order-data-split-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.order-info-details-stack h4 {
+  margin: 0 0 6px 0;
+  font-size: 17px;
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.order-summary-sub-txt {
+  margin: 0;
+  font-size: 13.5px;
+  color: #aaaaaa;
+}
+
+.order-summary-sub-txt strong {
+  color: #22c55e;
+}
+
+.order-status-pill-badge {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: bold;
+}

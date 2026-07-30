@@ -1,0 +1,41 @@
+.market-container {
+  padding: 40px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.search-header h2 {
+  font-size: 28px;
+  margin-bottom: 20px;
+  background: linear-gradient(to right, #fff, #00FF7F);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.search-box {
+  display: flex;
+  gap: 15px;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 10px;
+  border-radius: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.search-box input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #fff;
+  padding: 10px;
+  font-size: 16px;
+}
+
+.market-placeholder {
+  margin-top: 50px;
+  text-align: center;
+  padding: 100px;
+  border: 2px dashed rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  color: #888;
+}

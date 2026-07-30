@@ -1,37 +1,82 @@
-import React from 'react';
-// Routing logic-ku idhu kandippa venum
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'; 
-
-// Unga components folder-la irundhu correct-ah import pannunga
-import Login from './component/Login';
-import FarmerProfile from './component/FarmerProfile';
-import FarmerVerificationForm from './component/FarmerVerificationForm';
-import MarketFeed from './component/MarketFeed';
-import RiderDashboard from './component/RiderDashboard'; // ✅ ADDED ONLY THIS
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import Login from './pages/Login/Login';
+import FarmerVerificationForm from './pages/Verification/FarmerVerificationForm';
+import Sidebar from './shared/Sidebar/Sidebar';
+import FarmerMarketFeed from './pages/MarketFeed/MarketFeed';
+import FarmerProfile from './pages/FarmerProfile/FarmerProfile';
+import Market from './components/Market/Market';
+import CreatePost from './pages/CreatePost/CreatePost';
+import RiderDashboard from './components/Rider/DeliveryDashboard';
+import PublicMarketFeed from './components/User/MarketFeed';
+import AdminDashboard from './components/Admin/AdminDashboard';
+import './App.css';
 
 function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(() => localStorage.getItem('isLoggedIn') === 'true');
+  const [authRole, setAuthRole] = useState(() => localStorage.getItem('authRole') || '');
+
+  const normalizedRole = authRole.toUpperCase();
+  const isFarmer = normalizedRole === 'FARMER' || normalizedRole === '';
+  const isPublicUser = normalizedRole === 'PUBLIC';
+  const isDeliveryUser = normalizedRole === 'DELIVERY';
+  const isAdminUser = normalizedRole === 'ADMIN';
+
+  const homeRoute = isPublicUser
+    ? '/market-feed'
+    : isDeliveryUser
+      ? '/delivery-dashboard'
+      : isAdminUser
+        ? '/admin-dashboard'
+        : '/profile-feed';
+
+  const handleLogin = (role = '') => {
+    localStorage.setItem('isLoggedIn', 'true');
+    if (role) {
+      localStorage.setItem('authRole', role);
+      setAuthRole(role);
+    }
+    setIsAuthenticated(true);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('authRole');
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    setIsAuthenticated(false);
+    setAuthRole('');
+  };
+
   return (
     <Router>
-      <div className="app-main-container">
-        <Routes>
-          {/* 1. Modhalla varra page - Login */}
-          <Route path="/" element={<Login />} />
+      <div className="desktop-agri-dashboard">
+        {isAuthenticated && isFarmer && <Sidebar onLogout={handleLogout} />}
 
-          {/* 2. New Farmer "Create Account" click panna pōra page */}
-          <Route path="/register" element={<FarmerVerificationForm />} />
+        <main className={isAuthenticated && isFarmer ? "dashboard-content" : isAuthenticated ? "role-shell-content" : "full-screen-auth"}>
+          <Routes>
+            <Route path="/login" element={!isAuthenticated ? <Login onLogin={handleLogin} /> : <Navigate to={homeRoute} />} />
 
-          {/* 3. Farmer Login panna udane pōra Instagram-style profile */}
-          <Route path="/farmer-profile" element={<FarmerProfile />} />
+            <Route path="/farmer-verification" element={<FarmerVerificationForm />} />
+            <Route path="/register" element={<Navigate to="/farmer-verification" />} />
 
-          {/* 4. Public User (Customer) pōra market feed page */}
-          <Route path="/market-feed" element={<MarketFeed />} />
+            <Route path="/" element={isAuthenticated ? <Navigate to={homeRoute} /> : <Navigate to="/login" />} />
+            <Route path="/profile-feed" element={isAuthenticated && isFarmer ? <FarmerMarketFeed /> : <Navigate to={isAuthenticated ? homeRoute : '/login'} />} />
+            <Route path="/market-feed" element={isAuthenticated && isPublicUser ? <PublicMarketFeed /> : <Navigate to={isAuthenticated ? homeRoute : '/login'} />} />
+            <Route path="/market" element={isAuthenticated && isFarmer ? <Market /> : <Navigate to={isAuthenticated ? homeRoute : '/login'} />} />
+            <Route path="/create" element={isAuthenticated && isFarmer ? <CreatePost /> : <Navigate to={isAuthenticated ? homeRoute : '/login'} />} />
+            <Route path="/farmer-profile" element={isAuthenticated && isFarmer ? <FarmerProfile /> : <Navigate to={isAuthenticated ? homeRoute : '/login'} />} />
+            <Route path="/admin-dashboard" element={isAuthenticated && isAdminUser ? <AdminDashboard onLogout={handleLogout} /> : <Navigate to={isAuthenticated ? homeRoute : '/login'} />} />
+            
+            {/* 🔥 FIX: Rider Dashboard Route-ku onLogout Prop perfectly map panniyachu */}
+            <Route 
+              path="/delivery-dashboard" 
+              element={isAuthenticated && isDeliveryUser ? <RiderDashboard onLogout={handleLogout} /> : <Navigate to={isAuthenticated ? homeRoute : '/login'} />} 
+            />
 
-          {/* ✅ RIDER ROUTE (ONLY ADDITION) */}
-          <Route path="/delivery-dashboard" element={<RiderDashboard />} />
-
-          {/* Security: Thappa URL type panna automatic-ah login-ke kootitu pōgum */}
-          <Route path="*" element={<Navigate to="/" />} />
-        </Routes>
+            <Route path="*" element={<Navigate to={isAuthenticated ? homeRoute : '/login'} />} />
+          </Routes>
+        </main>
       </div>
     </Router>
   );

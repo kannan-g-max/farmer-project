@@ -1,0 +1,264 @@
+.profile-dashboard-wrapper {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  font-family: 'Inter', sans-serif;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.profile-heading-bar {
+  border-bottom: 1px solid #1a1a1a;
+  padding-bottom: 14px;
+  width: 100%;
+}
+
+.profile-heading-bar h3 {
+  font-size: 26px;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0;
+  letter-spacing: -0.5px;
+}
+
+.profile-heading-bar p {
+  color: #666666;
+  font-size: 14px;
+  margin: 5px 0 0 0;
+}
+
+.profile-identity-hero-card {
+  background-color: #141414;
+  border: 1px solid #222222;
+  border-radius: 14px;
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  box-sizing: border-box;
+}
+
+.profile-avatar-mainframe {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background: #22c55e;
+  color: #0c0c0c;
+  font-size: 26px;
+  font-weight: 800;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.2);
+}
+
+.profile-meta-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.profile-meta-stack h4 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.status-badge-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.badge-verified-customer {
+  background-color: rgba(34, 197, 94, 0.12);
+  color: #22c55e;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.badge-location-tag {
+  color: #888888;
+  font-size: 12px;
+}
+
+.profile-analytics-grid-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.metric-box-card {
+  background-color: #141414;
+  border: 1px solid #222222;
+  border-radius: 12px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  box-sizing: border-box;
+}
+
+.metric-lbl {
+  font-size: 11px;
+  color: #777777;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.metric-val-neon {
+  font-size: 24px;
+  font-weight: 800;
+  color: #22c55e;
+  margin: 4px 0 0 0;
+}
+
+.metric-val-white {
+  font-size: 24px;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 4px 0 0 0;
+}
+
+.metric-subtext {
+  font-size: 11px;
+  color: #555555;
+}
+
+.profile-details-sheet-card {
+  background-color: #141414;
+  border: 1px solid #222222;
+  border-radius: 14px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-sizing: border-box;
+}
+
+.section-subtitle-txt {
+  font-size: 13px;
+  font-weight: 700;
+  color: #777777;
+  text-transform: uppercase;
+  margin: 0 0 4px 0;
+}
+
+.info-field-row-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #1c1c1c;
+  padding-bottom: 12px;
+}
+
+.info-field-row-item.stretch-column {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.field-lbl {
+  font-size: 13.5px;
+  color: #888888;
+}
+
+.field-value-txt {
+  font-size: 14.5px;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.address-para {
+  line-height: 1.5;
+  color: #cccccc;
+  margin: 0;
+  font-weight: 500;
+}
+
+.profile-update-action-btn {
+  margin-top: 8px;
+  width: 100%;
+  background-color: transparent;
+  border: 1px solid #2d2d2d;
+  color: #aaaaaa;
+  padding: 13px;
+  font-size: 14px;
+  font-weight: 700;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.profile-update-action-btn:hover {
+  background-color: #1c1c1c;
+  color: #ffffff;
+}
+.user-profile-img{
+  width:100%;
+  height:100%;
+  border-radius:50%;
+  object-fit:cover;
+}
+
+.profile-avatar-mainframe{
+  position:relative;
+  overflow:hidden;
+}
+
+.user-edit-btn{
+  position:absolute;
+  bottom:0;
+  right:0;
+  width:35px;
+  height:35px;
+  border:none;
+  border-radius:50%;
+  background:#22c55e;
+  color:#fff;
+  cursor:pointer;
+}
+
+.edit-modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.7);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:9999;
+}
+
+.edit-modal-content{
+  background:#222;
+  padding:20px;
+  border-radius:15px;
+  width:90%;
+  max-width:400px;
+}
+
+.edit-input,
+.edit-bio{
+  width:100%;
+  margin-top:10px;
+  padding:10px;
+}
+
+.save-btn,
+.upload-btn{
+  width:100%;
+  margin-top:10px;
+  padding:10px;
+  border:none;
+  border-radius:10px;
+  background:#22c55e;
+  cursor:pointer;
+}
